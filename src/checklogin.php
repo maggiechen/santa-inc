@@ -21,8 +21,7 @@ if (OCIfetch($doquery))
    $_SESSION['admin_name']=$A_name;
     $_SESSION['admin_pwd']=$A_pwd;
   echo "<script language='javascript'>alert('Login 
-successfully!');window.location.href='homepage.php';</script>";   // if succeed, 
-move to next page
+successfully!');window.location.href='homepage.php';</script>";   // if succeed, move to next page
  }
  else
  {
