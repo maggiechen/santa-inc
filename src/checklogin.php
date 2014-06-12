@@ -1,15 +1,15 @@
 <?php
 // it is not necessary for you to use session to save variables, if you want to use 
-session, you need to specify a save path
+//session, you need to specify a save path
 ini_set('session.save_path','sessions');
 session_start(); 
 
-$A_name=$_POST["name"];  //receive username from previous form
-$A_pwd=$_POST["pwd"];    //receive password from previous form
+$A_name=$_POST["username"];  //receive username from previous form
+$A_pwd=$_POST["pw"];    //receive password from previous form
 // assume I have a table administrator which has attributes ANAME and PASSWORD
 $myselect = "select * from administrator where ANAME = '" .$A_name. "' and PASSWORD = 
 '" .$A_pwd. "'";
-$oraconn = OCILogon("your_oracle_account", "your_oracle_password", "ug");
+$oraconn = OCILogon("ora_f0p8", "a38343125", "ug");
 $doquery = OCIParse($oraconn, $myselect) or die("Couldn't parse statement.");
 OCIexecute($doquery) or die("Couldn't execute statement.");
 
