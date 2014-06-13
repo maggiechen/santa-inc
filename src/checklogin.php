@@ -59,8 +59,7 @@ if (!OCIfetch($doquery)) {
 	$doquery = OCIParse($oraconn, getUserAndPW("UnionWorker", "Uname", "pw")) or die("Couldn't parse statement.");
 	OCIexecute($doquery) or die("Couldn't execute statement.");
 	$role = "union";
-} else
- {
+} else {
    // the name and password are not in the table
     echo "<script language='javascript'>alert('Your username and/or password are 
 wrong！Please enter again');history.back();</script>";
