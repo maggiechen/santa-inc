@@ -105,13 +105,13 @@ if ($db_conn) {
 	} else
 		if (array_key_exists('reindeerstuff', $_POST)) {	//Request reindeer tuple info
 			echo"<br> Reindeer info<br>";
-			executePlainSQL("select * from Reindeer_drives r, takeCareOf t where t.Iuname =" .$u_name.); //TODO	- put in username variable --- this ought to work?
+			executePlainSQL("select * from Reindeer_drives r, takeCareOf t where t.Iuname =" .$u_name. "^ t.stall = r.stall"); //TODO	- put in username variable --- this ought to work?
 			OCICommit($db_conn);
 
 		} else														///Todo
 			if (array_key_exists('reindeerSleigh', $_POST)) {			//Request reindeer info given sleigh
 				$sleighName  = $_POST["reindeerS"];  //Get the sleighname from the form
-				executePlainSQL("select * from Reindeer_drives r, ");		//much todo what query how2sql
+				executePlainSQL("select * from Reindeer_drives r, ");		//much todo what query how2sql	
 				OCICommit($db_conn);   
 			}
 
