@@ -79,7 +79,7 @@ function executeBoundSQL($cmdstr, $list) {
 	}
 
 }
-//==========================================vvvv MODIFY THIS FUCKER vvv==================================================================
+//==========================================vvvv MODIFY THIS vvv==================================================================
 //TODO
 //Modify this so it prints out stuff depending on what you asked for it
 function printResult($result) { //prints results from a select statement
