@@ -9,7 +9,7 @@ If you run into an error running this on the servers and get stuck, go through t
 -It's char(40), not char[40]
 
 And if you do see a glaring error with the table, please check and (if needed) correct the diagram and report as well.
-
+     
 */
 
 drop table Item cascade constraints;
