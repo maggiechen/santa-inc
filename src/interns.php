@@ -98,7 +98,7 @@ function printResult($result) { //prints results from a select statement
 if ($db_conn) {
 
 	if (array_key_exists('tId', $_POST)) {	//Request Trainer ID
-		echo "<br> Trainer name <br>";	//TODO  - PUT IN THE IUSERNAME THINGY HOW DO I ACCESS IT
+		echo "<br> Trainer name <br>"; 
 		executePlainSQL("select i.Funame from InternElf_train i where Iuname =" .$A_name.);	 //TODO I think i fixed it?
 		OCICommit($db_conn);
 
