@@ -5,7 +5,8 @@
 
 <p> <input type = "submit", value = "Your Trainer id", name = "tId"> </p>
 <p> <input type = "submit", value = "Reindeer under your care", name = "reindeerstuff"> </p>
-<p> <input type = "submit", value = "Search reindeer by sleigh", name = "reindeerSleigh"> </p>
+<p> Search reindeer by sleigh:&nbsp;<input type = "text",name = "reindeerS"> </p>
+<p> <input type = "submit", value = "Search", name = "submit"> </p>
 
 <?php
 
@@ -14,7 +15,7 @@
 //=========================================================================================================================
 $success = True; //keep track of errors so it redirects the page only if there are no errors
 //$db_conn = OCILogon("Username", "Password", "ug");  <<-- THIS WONT WORK FOR NOW CAUSE IDK HOW TO DO IT
-
+$A_name=$_POST["username"];  //receive username from previous form
 //=========================================================================================================================
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
@@ -98,13 +99,13 @@ if ($db_conn) {
 
 	if (array_key_exists('tId', $_POST)) {	//Request Trainer ID
 		echo "<br> Trainer name <br>";	//TODO  - PUT IN THE IUSERNAME THINGY HOW DO I ACCESS IT
-		executePlainSQL("select i.Funame from InternElf_train i where Iuname = ''");	 //HOW THE FUCK DO I GET THE IUSERNAME HERE OH GOD HELP ME
+		executePlainSQL("select i.Funame from InternElf_train i where Iuname =" .$A_name.);	 //TODO I think i fixed it?
 		OCICommit($db_conn);
 
 	} else
 		if (array_key_exists('reindeerstuff', $_POST)) {	//Request reindeer tuple info
 			echo"<br> Reindeer info<br>";
-			executePlainSQL("select * from Reindeer_drives r, takeCareOf t where t.Iuname = '' ", $alltuples); //TODO	- put in username variable
+			executePlainSQL("select * from Reindeer_drives r, takeCareOf t where t.Iuname =" .$A_name.); //TODO	- put in username variable --- this ought to work?
 			OCICommit($db_conn);
 
 		} else														//TODO how do i do this one .-.	
