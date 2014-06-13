@@ -15,7 +15,7 @@
 //=========================================================================================================================
 $success = True; //keep track of errors so it redirects the page only if there are no errors
 //$db_conn = OCILogon("Username", "Password", "ug");  <<-- THIS WONT WORK FOR NOW CAUSE IDK HOW TO DO IT
-$A_name=$_POST["username"];  //receive username from previous form
+$u_name=$_POST["username"];  //receive username from previous form
 //=========================================================================================================================
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
@@ -99,20 +99,20 @@ if ($db_conn) {
 
 	if (array_key_exists('tId', $_POST)) {	//Request Trainer ID
 		echo "<br> Trainer name <br>"; 
-		executePlainSQL("select i.Funame from InternElf_train i where Iuname =" .$A_name.);	 //TODO I think i fixed it?
+		executePlainSQL("select i.Funame from InternElf_train i where Iuname =" .$u_name.);	 //TODO I think i fixed it?
 		OCICommit($db_conn);
 
 	} else
 		if (array_key_exists('reindeerstuff', $_POST)) {	//Request reindeer tuple info
 			echo"<br> Reindeer info<br>";
-			executePlainSQL("select * from Reindeer_drives r, takeCareOf t where t.Iuname =" .$A_name.); //TODO	- put in username variable --- this ought to work?
+			executePlainSQL("select * from Reindeer_drives r, takeCareOf t where t.Iuname =" .$u_name.); //TODO	- put in username variable --- this ought to work?
 			OCICommit($db_conn);
 
-		} else														//TODO how do i do this one .-.	
+		} else														///Todo
 			if (array_key_exists('reindeerSleigh', $_POST)) {			//Request reindeer info given sleigh
 				$sleighName  = $_POST["reindeerS"];  //Get the sleighname from the form
-				executePlainSQL("select * from Reindeer_drives r, ");
-				OCICommit($db_conn);    //nonsensical comment
+				executePlainSQL("select * from Reindeer_drives r, ");		//much todo what query how2sql
+				OCICommit($db_conn);   
 			}
 
 	if ($_POST && $success) {
