@@ -44,7 +44,7 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 }
 //=========================================================================================================================
 function executeBoundSQL($cmdstr, $list) {
-	/* Sometimes a same statement will be excuted for severl times, only
+	/* Sometimes a same statement will be executed for several times, only
 	 the value of variables need to be changed.
 	 In this case you don't need to create the statement several times; 
 	 using bind variables can make the statement be shared and just 
@@ -109,9 +109,10 @@ if ($db_conn) {
 			OCICommit($db_conn);
 
 		} else														//TODO how do i do this one .-.	
-			if (array_key_exists('reindeerSleigh', $_POST)) {		//Request reindeer info given sleigh
-				executePlainSQL("");
-				OCICommit($db_conn);
+			if (array_key_exists('reindeerSleigh', $_POST)) {			//Request reindeer info given sleigh
+				$sleighName  = $_POST["reindeerS"];  //Get the sleighname from the form
+				executePlainSQL("select * from Reindeer_drives r, ");
+				OCICommit($db_conn);    //nonsensical comment
 			}
 
 	if ($_POST && $success) {
