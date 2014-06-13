@@ -11,7 +11,7 @@
 <?php
 
 //this tells the system that it's no longer just parsing 
-//html; it's now parsing PHP
+//html; it's now parsing PHP! 
 //=========================================================================================================================
 $success = True; //keep track of errors so it redirects the page only if there are no errors
 //$db_conn = OCILogon("Username", "Password", "ug");  <<-- THIS WONT WORK FOR NOW CAUSE IDK HOW TO DO IT
