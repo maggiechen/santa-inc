@@ -69,24 +69,24 @@ function executeBoundSQL($cmdstr, $list) {
 
 }
 
-function createQueryString($tab, $uname, $pw) {
+function createQueryString($tab) {
 
 	global $A_name, $A_pwd;
 
 	$retval =	"select * 
-				from ".$tab."  where ".$uname." = '" .$A_name. "' and ".$pw." = 
+				from ".$tab."  where uname = '" .$A_name. "' and pw = 
 				'" .$A_pwd. "'";
- 	echo "About to execute: ".$retval."\r\n";
+ 	//echo "<br>About to execute: ".$retval."</br>";
 	return $retval;
 }
 
 function printResult($result) { //prints results from a select statement
+	//Note: DO NOT use this function for debugging. Once you fetch the array from a $result, you CANNOT try to fetch it again. 
 	echo "<br>Got data from table<br>";
 	echo "<table>";
 	echo "<tr><th>Uname</th><th>Pw</th></tr>";
-//TODO: MUST CHANGE IUNAME IF YOU WANT TO SEE OTHER USERNAMES
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr><td>" . $row["IUNAME"] . "</td><td>" . $row["PW"] . "</td></tr>"; //or just use "echo $row[0]" 
+		echo "<tr><td>" . $row["UNAME"] . "</td><td>" . $row["PW"] . "</td></tr>"; //or just use "echo $row[0]" 
 	}
 	echo "</table>";
 	echo "<br></br>"; 
@@ -103,70 +103,59 @@ $A_pwd=$_POST["pw"];    //receive password from previous form
 
 $success = true;
 $oraconn = OCILogon("ora_f8l8", "a40626103", "ug");
-
-
+$loginsuccess = false;
+//We need loginsuccess because once you use OCI_Fetch once for a query, you can't use it again
 
 //Query the interns first
 
 if ($oraconn) {
-	$doquery = executePlainSQL(createQueryString("InternElf_train", "Iuname", "pw"));
-	
+
+	//Four types of users
+
+	///////////////////INTERNS///////////////////////////////////////////////////
+	$doquery = executePlainSQL(createQueryString("InternElf_train"));
 	$role = "intern";
 
-	echo"<br>Intern table result:</br>";
-	printResult($doquery);
+	if (OCI_Fetch($doquery))
+		$loginsuccess = true;
 
-	if (OCI_Fetch($doquery)) {
-		$doquery = executePlainSQL(createQueryString("FulltimeElf_mng_mon", "Funame", "pw"));
+	///////////////////FULLTIME WORKERS////////////////////////////////////////////
+	if (!$loginsuccess) {
+		$doquery = executePlainSQL(createQueryString("FulltimeElf_mng_mon"));
 		$role = "fulltime";
-
-		echo"<br>Fulltime table result:</br>";
-		printResult($doquery);
-
+		if (OCI_Fetch($doquery))
+			$loginsuccess = true;
 	} 
 
-
-	if (OCI_Fetch($doquery)){
-		$doquery = executePlainSQL(createQueryString("ManagerElf", "Muname", "pw"));
+	///////////////////MANAGERS///////////////////////////////////////////////
+	if (!$loginsuccess){
+		$doquery = executePlainSQL(createQueryString("ManagerElf"));
 		$role = "manager";
-
-		echo"<br>Manager table result:</br>";
-		printResult($doquery);
+		if (OCI_Fetch($doquery))
+			$loginsuccess = true;
 	}
 
-	if (OCI_Fetch($doquery)){
-		$doquery = executePlainSQL(createQueryString("UnionWorker", "Uname", "pw"));
+	///////////////////UNION WORKERS///////////////////////////////////////////////////
+	if (!$loginsuccess){
+		$doquery = executePlainSQL(createQueryString("UnionWorker"));
 		$role = "union";
-
-
-		echo"<br>Union table result:</br>";
-		printResult($doquery);
+		if (OCI_Fetch($doquery))
+			$loginsuccess = true;
 	}
 
-	if(OCI_Fetch($doquery)){
+	if(!$loginsuccess){
 	   // the name and password are not in the table
-	  echo "Sorry, that's not a correct username/password combination.\r\n";
-	  echo "You entered the username ".$A_name." and the password ".$A_pwd.".\r\n";
-	   //header("location: login.php");
-
+	  echo "<p>Sorry, that's not a correct username/password combination.</p>";
+	  echo "<p>You entered the username ".$A_name." and the password ".$A_pwd."</p>";
+	   header("location: login.php");
 	 }
 
-	/* //Test query to see if parsing and executing an SQL statement works
-	$tryquery = OCIParse($oraconn, "select * from InternElf_train");
-	OCIexecute($tryquery, OCI_DEFAULT);
-	if (OCIfetch($tryquery)) {
-		echo "Try worked";
-		printResult($tryquery);
-	}
-	*/
-	echo "You are a ".$role;
 
+	echo "<p>The role of the user is: ".$role."</p>";
 	OCILogoff($oraconn);
-
 	 
-	   $_SESSION['admin_name']=$A_name;
-	   $_SESSION['admin_pwd']=$A_pwd;
-	  
+	$_SESSION['admin_name']=$A_name;
+	$_SESSION['admin_pwd']=$A_pwd;  
 		//header("location: santa-inc.php");
  } else {
 	echo "cannot connect";
