@@ -125,10 +125,10 @@ insert into Supplies values (78.35, 'Plastic' , 'Badoinkadoink', 1, 1);
 insert into Supplies values (5700.00, 'Gold' , 'Tinky''s Toymakers', 58, 82752);
 	
 create table ManagerElf(
-Muname char(40),
+uname char(40),
 pw char(40),
 name char(40),
-PRIMARY KEY(Muname));
+PRIMARY KEY(uname));
 
 insert into ManagerElf values ('sailor.south', '123asdfjkl', 'Sally South');
 insert into ManagerElf values ('smithereeny', 'mypw15','Bob Smith');
@@ -150,15 +150,15 @@ insert into UnionWorker values ('corgi358', '99bottlesofbeer');
 
 create table FulltimeElf_mng_mon(
 	Muname char(40) not null,
-	Funame char(40),
+	uname char(40),
 	pw char(40),
 	wages decimal (10, 2),
 	insurance decimal (10, 2),
-	Uname char(40) not null,
+	Uniname char(40) not null,
 name char(40), 
-	PRIMARY KEY (Funame),
-	foreign key (Uname) references UnionWorker (Uname),
-	foreign key (Muname) references ManagerElf (Muname));
+	PRIMARY KEY (uname),
+	foreign key (Uniname) references UnionWorker (uname),
+	foreign key (Muname) references ManagerElf (uname));
 
 insert into FulltimeElf_mng_mon values 
 ('sailor.south', 'tinkerwinker', 'justameliathings', 18.20, 30.00, 'DanceALot', 'Tinky Winky');
@@ -176,7 +176,7 @@ insert into FulltimeElf_mng_mon values
 ('theotherone', 'notarthur', 'rtable', 29.30, 50.20, 'turingMachine', 'Lancelot Glueface');
 
 create table InternElf_train(
-	Iuname char(40),
+	uname char(40),
 	pw char(40),
 	institution char(40),
 	SID integer,
@@ -184,8 +184,8 @@ create table InternElf_train(
 	name char(40),
 	duration integer,
 	startDate date,
-	PRIMARY KEY (Iuname),
-	foreign key (Funame) references FulltimeElf_mng_mon(Funame));
+	PRIMARY KEY (uname),
+	foreign key (Funame) references FulltimeElf_mng_mon(uname));
 
 insert into InternElf_train values 
 ('brandonblimp', 'bran8738752', 'UBC', 31244122, 'notarthur', 'Brandon Lim', 3, '2014-2-28');
@@ -236,7 +236,7 @@ create table takeCareOf(
 Iuname char(40),
 stall integer,
 PRIMARY KEY (Iuname, stall),
-foreign key (Iuname) references InternElf_train(Iuname),
+foreign key (Iuname) references InternElf_train(uname),
 foreign key (stall) references Reindeer_drives(stall));
 
 insert into takeCareOf values ('easterjack2', 30);
