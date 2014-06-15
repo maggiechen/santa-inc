@@ -111,7 +111,7 @@ if ($db_conn) {
 		} else														///Todo
 			if (array_key_exists('reindeerSleigh', $_POST)) {			//Request reindeer info given sleigh
 				$sleighName  = $_POST["reindeerS"];  //Get the sleighname from the form
-				executePlainSQL("select * from Reindeer_drives r, ");		//much todo what query how2sql	
+				executePlainSQL("select * from Reindeer_drives r, Sleigh s where s.sName = '" .$sleighName. "' ^ s.sModel = r.sModel");		//much todo what query how2sql	
 				OCICommit($db_conn);   
 			}
 
