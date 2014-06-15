@@ -86,6 +86,7 @@ function printResult($result) { //prints results from a select statement
 	echo "<table>";
 	echo "<tr><th>Uname</th><th>Pw</th></tr>";
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+		
 		echo "<tr><td>" . $row["UNAME"] . "</td><td>" . $row["PW"] . "</td></tr>"; //or just use "echo $row[0]" 
 	}
 	echo "</table>";
@@ -106,6 +107,8 @@ $oraconn = OCILogon("ora_f8l8", "a40626103", "ug");
 $loginsuccess = false;
 //We need loginsuccess because once you use OCI_Fetch once for a query, you can't use it again
 
+$testquery = executePlainSQL("select * from InternElf_train");
+printResult($testquery);
 //Query the interns first
 
 if ($oraconn) {
@@ -114,7 +117,7 @@ if ($oraconn) {
 
 	///////////////////INTERNS///////////////////////////////////////////////////
 	$doquery = executePlainSQL(createQueryString("InternElf_train"));
-	$role = "intern";
+	$role = "interns";
 
 	if (OCI_Fetch($doquery))
 		$loginsuccess = true;
@@ -148,6 +151,7 @@ if ($oraconn) {
 	  echo "<p>Sorry, that's not a correct username/password combination.</p>";
 	  echo "<p>You entered the username ".$A_name." and the password ".$A_pwd."</p>";
 	   header("location: login.php");
+	   exit();
 	 }
 
 
@@ -156,7 +160,12 @@ if ($oraconn) {
 	 
 	$_SESSION['admin_name']=$A_name;
 	$_SESSION['admin_pwd']=$A_pwd;  
-		//header("location: santa-inc.php");
+	$_SESSION['role']=$role; // save info to pass on to next page
+
+
+	header("location: sessions/".$role.".php");
+	exit();
+	
  } else {
 	echo "cannot connect";
 	$e = OCI_Error(); // For OCILogon errors pass no handle

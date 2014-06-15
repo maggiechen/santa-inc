@@ -1,12 +1,15 @@
 <!-- php access file for interns-->
 <p>
 <form method = "POST", action = "interns.php">		
-</p>
+
 
 <p> <input type = "submit", value = "Your Trainer id", name = "tId"> </p>
 <p> <input type = "submit", value = "Reindeer under your care", name = "reindeerstuff"> </p>
 <p> Search reindeer by sleigh:&nbsp;<input type = "text",name = "reindeerS"> </p>
 <p> <input type = "submit", value = "Search", name = "submit"> </p>
+</form>
+</p>
+
 
 <?php
 
@@ -14,8 +17,10 @@
 //html; it's now parsing PHP! 
 //=========================================================================================================================
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-//$db_conn = OCILogon("Username", "Password", "ug");  <<-- THIS WONT WORK FOR NOW CAUSE IDK HOW TO DO IT
-$u_name=$_POST["username"];  //receive username from previous form
+$db_conn = OCILogon("ora_f8l8", "a40626103", "ug");  
+session_start();
+$u_name=$_SESSION["admin_name"];  //receive username from previous form
+echo "THIS IS THE UNAME".$u_name;
 //=========================================================================================================================
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
@@ -99,8 +104,17 @@ if ($db_conn) {
 
 	if (array_key_exists('tId', $_POST)) {	//Request Trainer ID
 		echo "<br> Trainer name <br>"; 
-		executePlainSQL("select i.Funame from InternElf_train i where Iuname =" .$u_name.);	 //TODO I think i fixed it?
-		OCICommit($db_conn);
+		$trainernamequery = executePlainSQL("select f.name as name from InternElf_train i, FulltimeElf_mng_mon f where i.funame = f.uname and i.uname = '".$u_name."'");	 //TODO I think i fixed it?
+		echo $u_name;
+		printResult($trainernamequery);
+
+		$sel = executePlainSQL("select * from ManagerElf");
+		printResult($sel);
+
+		$row = OCI_Fetch_Array($trainernamequery, OCI_BOTH);
+		echo "<p>".$row[0]."</p>";
+	}
+
 
 	} else
 		if (array_key_exists('reindeerstuff', $_POST)) {	//Request reindeer tuple info
@@ -112,7 +126,6 @@ if ($db_conn) {
 			if (array_key_exists('reindeerSleigh', $_POST)) {			//Request reindeer info given sleigh
 				$sleighName  = $_POST["reindeerS"];  //Get the sleighname from the form
 				executePlainSQL("select * from Reindeer_drives r, ");		//much todo what query how2sql	
-				OCICommit($db_conn);   
 			}
 
 	if ($_POST && $success) {
@@ -123,7 +136,7 @@ if ($db_conn) {
 		//$result = executePlainSQL("select * from tab1");
 		//printResult($result);
 	}
-
+*/
 	//Commit to save changes...
 	OCILogoff($db_conn);
 } else {
