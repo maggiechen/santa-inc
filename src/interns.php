@@ -1,11 +1,15 @@
 <!-- php access file for interns-->
 <p>
-<form method = "POST", action = "interns.php">		
+<form method = "POST" action = "interns.php">		
+<p> <input type = "submit" value = "Reindeer under your care" name = "reindeer"> </p>
+</form>
+</p>
 
-
-<p> <input type = "submit", value = "Reindeer under your care", name = "reindeer"> </p>
-<p> Search reindeer by sleigh:&nbsp;<input type = "text",name = "reindeerSleigh"> </p>
-<p> <input type = "submit", value = "Search", name = "submit"> </p>
+<p> Search reindeer by sleigh:&nbsp;</p>
+<p>
+<form method = "POST" action = "interns.php">
+<p><input type = "text" name = "reindeerSleigh"> </p>
+<p> <input type = "submit" value = "Search" name = "submit"> </p>
 </form>
 </p>
 
@@ -17,7 +21,6 @@ session_start();
 $success = True; //keep track of errors so it redirects the page only if there are no errors
 $db_conn = OCILogon("ora_f8l8", "a40626103", "ug");  
 $u_name=$_SESSION["admin_name"];  //receive username from previous form
-//echo "THIS IS THE UNAME".$u_name;
 //=========================================================================================================================
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
@@ -102,28 +105,29 @@ if ($db_conn) {
 	//Print the name of the intern's trainer
 	echo "<br> Trainer name: <br>"; 
 	$trainernamequery = executePlainSQL("select f.name as name from InternElf_train i, FulltimeElf_mng_mon f where i.funame = f.uname and i.uname = '".$u_name."'");	
-	$row = OCI_Fetch_Array($trainernamequery, OCI_BOTH);
-	echo "<p>".$row[0]."</p>";
+	while ($row = OCI_Fetch_Array($trainernamequery, OCI_BOTH))
+		echo "<p>".$row[0]."</p>";
 
+	
 
 
 	if (array_key_exists('reindeer', $_POST)) {	//Request reindeer tuple info
-		echo"<br> Reindeer info<br>";
-		$reindeerquery = executePlainSQL("select r.name, r.stall from Reindeer_drives r, takeCareOf t where t.Iuname =" .$u_name. "^ t.stall = r.stall"); 
+		echo "Array exists";
+		
+	}
 
-	} else if (array_key_exists('reindeerSleigh', $_POST)) {			//Request reindeer info given sleigh
-		$sleighName  = $_POST["reindeerS"];  //Get the sleighname from the form
+	if (array_key_exists('reindeerSleigh', $_POST)) {			//Request reindeer info given sleigh
+		$sleighName  = $_POST["reindeerSleigh"];  //Get the sleighname from the form
 			
-		executePlainSQL("select * from Reindeer_drives r, Sleigh s where s.sName = '" .$sleighName. "' ^ s.sModel = r.sModel");		
+		$reinsleighquery = executePlainSQL("select * from Reindeer_drives r, Sleigh s where s.sName = '" .$sleighName. "' and s.sModel = r.sModel");		
 	}
 
 	if ($_POST && $success) {
 		//POST-REDIRECT-GET
 		header("location: interns.php");
 	} else {
-		// Select data...
-		//$result = executePlainSQL("select * from tab1");
-		//printResult($result);
+		echo "<p>Didn't redirect</p>";
+		echo $_POST;
 	}
 
 	//Commit to save changes...
