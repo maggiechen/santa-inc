@@ -3,24 +3,21 @@
 <form method = "POST", action = "interns.php">		
 
 
-<p> <input type = "submit", value = "Your Trainer id", name = "tId"> </p>
-<p> <input type = "submit", value = "Reindeer under your care", name = "reindeerstuff"> </p>
-<p> Search reindeer by sleigh:&nbsp;<input type = "text",name = "reindeerS"> </p>
+<p> <input type = "submit", value = "Reindeer under your care", name = "reindeer"> </p>
+<p> Search reindeer by sleigh:&nbsp;<input type = "text",name = "reindeerSleigh"> </p>
 <p> <input type = "submit", value = "Search", name = "submit"> </p>
 </form>
 </p>
 
 
 <?php
+ini_set('session.save_path','sessions'); //save session to sessions folder
+session_start();
 
-//this tells the system that it's no longer just parsing 
-//html; it's now parsing PHP! 
-//=========================================================================================================================
 $success = True; //keep track of errors so it redirects the page only if there are no errors
 $db_conn = OCILogon("ora_f8l8", "a40626103", "ug");  
-session_start();
 $u_name=$_SESSION["admin_name"];  //receive username from previous form
-echo "THIS IS THE UNAME".$u_name;
+//echo "THIS IS THE UNAME".$u_name;
 //=========================================================================================================================
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
@@ -102,32 +99,23 @@ function printResult($result) { //prints results from a select statement
 // Connect Oracle...
 if ($db_conn) {
 
-	if (array_key_exists('tId', $_POST)) {	//Request Trainer ID
-		echo "<br> Trainer name <br>"; 
-		$trainernamequery = executePlainSQL("select f.name as name from InternElf_train i, FulltimeElf_mng_mon f where i.funame = f.uname and i.uname = '".$u_name."'");	 //TODO I think i fixed it?
-		echo $u_name;
-		printResult($trainernamequery);
+	//Print the name of the intern's trainer
+	echo "<br> Trainer name: <br>"; 
+	$trainernamequery = executePlainSQL("select f.name as name from InternElf_train i, FulltimeElf_mng_mon f where i.funame = f.uname and i.uname = '".$u_name."'");	
+	$row = OCI_Fetch_Array($trainernamequery, OCI_BOTH);
+	echo "<p>".$row[0]."</p>";
 
-		$sel = executePlainSQL("select * from ManagerElf");
-		printResult($sel);
 
-		$row = OCI_Fetch_Array($trainernamequery, OCI_BOTH);
-		echo "<p>".$row[0]."</p>";
+
+	if (array_key_exists('reindeer', $_POST)) {	//Request reindeer tuple info
+		echo"<br> Reindeer info<br>";
+		$reindeerquery = executePlainSQL("select r.name, r.stall from Reindeer_drives r, takeCareOf t where t.Iuname =" .$u_name. "^ t.stall = r.stall"); 
+
+	} else if (array_key_exists('reindeerSleigh', $_POST)) {			//Request reindeer info given sleigh
+		$sleighName  = $_POST["reindeerS"];  //Get the sleighname from the form
+			
+		executePlainSQL("select * from Reindeer_drives r, Sleigh s where s.sName = '" .$sleighName. "' ^ s.sModel = r.sModel");		
 	}
-
-
-	} else
-		if (array_key_exists('reindeerstuff', $_POST)) {	//Request reindeer tuple info
-			echo"<br> Reindeer info<br>";
-			executePlainSQL("select * from Reindeer_drives r, takeCareOf t where t.Iuname =" .$u_name. "^ t.stall = r.stall"); //TODO	- put in username variable --- this ought to work?
-			OCICommit($db_conn);
-
-		} else														///Todo
-			if (array_key_exists('reindeerSleigh', $_POST)) {			//Request reindeer info given sleigh
-				$sleighName  = $_POST["reindeerS"];  //Get the sleighname from the form
-				
-				executePlainSQL("select * from Reindeer_drives r, Sleigh s where s.sName = '" .$sleighName. "' ^ s.sModel = r.sModel");		
-			}
 
 	if ($_POST && $success) {
 		//POST-REDIRECT-GET
@@ -140,6 +128,7 @@ if ($db_conn) {
 
 	//Commit to save changes...
 	OCILogoff($db_conn);
+
 } else {
 	echo "cannot connect";
 	$e = OCI_Error(); // For OCILogon errors pass no handle

@@ -244,3 +244,10 @@ insert into takeCareOf values ('assassin.of.the.night', 4);
 insert into takeCareOf values ('obvileaguer', 6);
 insert into takeCareOf values ('quinzelqueen', 7);
 insert into takeCareOf values ('honkytonk3', 1);
+
+
+--CONSTRAINTS--
+alter table ManagerElf
+add constraint managerParticipation 
+check (uname in (select Muname 
+				from FulltimeElf_mng_mon));

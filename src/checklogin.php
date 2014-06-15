@@ -163,7 +163,7 @@ if ($oraconn) {
 	$_SESSION['role']=$role; // save info to pass on to next page
 
 
-	header("location: sessions/".$role.".php");
+	header("location: ".$role."wrapper.php");
 	exit();
 	
  } else {
