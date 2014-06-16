@@ -185,7 +185,8 @@ create table InternElf_train(
 	duration integer,
 	startDate date,
 	PRIMARY KEY (uname),
-	foreign key (Funame) references FulltimeElf_mng_mon(uname));
+	foreign key (Funame) references FulltimeElf_mng_mon(uname),
+	CONSTRAINT durationMax CHECK (duration < 13));
 
 insert into InternElf_train values 
 ('brandonblimp', 'bran8738752', 'UBC', 31244122, 'notarthur', 'Brandon Lim', 3, '2014-2-28');
@@ -245,16 +246,3 @@ insert into takeCareOf values ('obvileaguer', 6);
 insert into takeCareOf values ('quinzelqueen', 7);
 insert into takeCareOf values ('honkytonk3', 1);
 
-create trigger childToyParticipation
-	after insert or update on Child
-		referencing new as new old as old
-		for each row
-		begin 
-		if exists ((select CID from Child)
-					except
-					(select distinct CID from Toy_isFor))
-		then raise_application_error(-20999, 'This child doesn''t have a toy');
-		end if;
-
-		end;
-/
