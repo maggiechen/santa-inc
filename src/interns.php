@@ -1,8 +1,3 @@
-<p>
-<form method = "POST" action = "interns.php">		
-<p> <input type = "submit" value = "Reindeer under your care" name = "reindeer"> </p>
-</form>
-</p>
 
 <p> Search reindeer by sleigh:</p>
 <p>
@@ -110,19 +105,34 @@ if ($db_conn) {
 		echo "<p>".$row[0]."</p>";
 
 
-	if (array_key_exists('reindeer', $_POST)) {	//Request reindeer tuple info
-		echo "testing: REINDER";
-		$reindeerquery = executePlainSQL("select * from takeCareOf t, Reindeer_drives r where t.stall = r.stall and t.iuname = '".$u_name."'");
-		while ($row = OCI_Fetch_Array($reindeerquery, OCI_BOTH))
-				echo "<p>".$row[0]."</p>".$row[1]."</p>".$row[2]."</p>".$row[3]."</p>";
+	
+	$reindeerquery = executePlainSQL("select * from takeCareOf t, Reindeer_drives r where t.stall = r.stall and t.iuname = '".$u_name."'");
+
+	echo "<br>Reindeer under your care:<br>";
+	echo "<table>";
+	echo "<tr><th>Name</th><th>Stall #</th><th>Diet</th><th>Sleigh model</th><th>Sleigh Serial</th></tr>";
+	while ($row = OCI_Fetch_Array($reindeerquery, OCI_BOTH)) {
+		echo "<tr><td>" . $row["NAME"] . "</td><td>" . $row["STALL"] . "</td><td>".$row["DIET"]."</td><td>".$row["SMODEL"]."</td><td>".$row["SSERIAL"]."</td></tr>"; //or just use "echo $row[0]" 
 	}
+	echo "</table>";
+	
+	$countreindeerquery = executePlainSQL("select count(r.stall) from takeCareOf t, Reindeer_drives r where t.stall = r.stall and t.iuname = '".$u_name."'");
+	$row = OCI_Fetch_Array($countreindeerquery, OCI_BOTH);
+	echo "<p> You take care of <b>".$row[0]."</b> reindeer.</p>";
+
 
 	if (array_key_exists('reindeerSleigh', $_POST)) {			//Request reindeer info given sleigh
 		$sleighName  = $_POST["reindeerSleigh"];  //Get the sleighname from the form
+		$reinsleighquery = executePlainSQL("select * from Reindeer_drives r, Sleigh s where s.sName like '%" .$sleighName. "%' and s.sModel = r.sModel and s.sSerial = r.sSerial");		
 
-		$reinsleighquery = executePlainSQL("select * from Reindeer_drives r, Sleigh s where s.sName = '" .$sleighName. "' and s.sModel = r.sModel and s.sSerial = r.sSerial");		
-		while ($row = OCI_Fetch_Array($reinsleighquery, OCI_BOTH))
-			echo "<p>".$row[0]."</p>";
+		echo "<br>Search results for '".$sleighName."'': <br>";
+		echo "<table>";
+		echo "<tr><th>Name</th><th>Stall #</th><th>Diet</th><th>Sleigh model</th><th>Sleigh Serial</th></tr>";
+		while ($row = OCI_Fetch_Array($reinsleighquery, OCI_BOTH)) {
+			echo "<tr><td>" . $row["NAME"] . "</td><td>" . $row["STALL"] . "</td><td>".$row["DIET"]."</td><td>".$row["SMODEL"]."</td><td>".$row["SSERIAL"]."</td></tr>"; //or just use "echo $row[0]" 
+		}
+		echo "</table>";
+	
 
 	}
 
