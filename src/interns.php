@@ -1,11 +1,10 @@
-<!-- php access file for interns-->
 <p>
 <form method = "POST" action = "interns.php">		
 <p> <input type = "submit" value = "Reindeer under your care" name = "reindeer"> </p>
 </form>
 </p>
 
-<p> Search reindeer by sleigh:&nbsp;</p>
+<p> Search reindeer by sleigh:</p>
 <p>
 <form method = "POST" action = "interns.php">
 <p><input type = "text" name = "reindeerSleigh"> </p>
@@ -21,6 +20,7 @@ session_start();
 $success = True; //keep track of errors so it redirects the page only if there are no errors
 $db_conn = OCILogon("ora_f8l8", "a40626103", "ug");  
 $u_name=$_SESSION["admin_name"];  //receive username from previous form
+//echo $u_name;
 //=========================================================================================================================
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
@@ -49,7 +49,7 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 }
 //=========================================================================================================================
 function executeBoundSQL($cmdstr, $list) {
-	/* Sometimes a same statement will be executed for several times, only
+	/* Sometimes a same statement will be excuted for severl times, only
 	 the value of variables need to be changed.
 	 In this case you don't need to create the statement several times; 
 	 using bind variables can make the statement be shared and just 
@@ -73,6 +73,7 @@ function executeBoundSQL($cmdstr, $list) {
 			unset ($val); //make sure you do not remove this. Otherwise $val will remain in an array object wrapper which will not be recognized by Oracle as a proper datatype
 
 		}
+
 		$r = OCIExecute($statement, OCI_DEFAULT);
 		if (!$r) {
 			echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
@@ -108,28 +109,31 @@ if ($db_conn) {
 	while ($row = OCI_Fetch_Array($trainernamequery, OCI_BOTH))
 		echo "<p>".$row[0]."</p>";
 
-	
-
 
 	if (array_key_exists('reindeer', $_POST)) {	//Request reindeer tuple info
-		echo "Array exists";
 		
+		echo "REINDER";
+		$reindeerquery = executePlainSQL("select * from takeCareOf t, Reindeer_drives r where t.stall = r.stall and t.iuname = '".$u_name."'");
+		while ($row = OCI_Fetch_Array($reindeerquery, OCI_BOTH))
+				echo "<p>".$row[0]."</p>".$row[1]."</p>".$row[2]."</p>".$row[3]."</p>";
 	}
 
 	if (array_key_exists('reindeerSleigh', $_POST)) {			//Request reindeer info given sleigh
 		$sleighName  = $_POST["reindeerSleigh"];  //Get the sleighname from the form
-			
-		$reinsleighquery = executePlainSQL("select * from Reindeer_drives r, Sleigh s where s.sName = '" .$sleighName. "' and s.sModel = r.sModel");		
-	}
 
+		$reinsleighquery = executePlainSQL("select * from Reindeer_drives r, Sleigh s where s.sName = '" .$sleighName. "' and s.sModel = r.sModel");		
+		while ($row = OCI_Fetch_Array($reinsleighquery, OCI_BOTH))
+			echo "<p>".$row[0]."</p>";
+
+	}
+/*
 	if ($_POST && $success) {
 		//POST-REDIRECT-GET
 		header("location: interns.php");
 	} else {
-		echo "<p>Didn't redirect</p>";
-		echo $_POST;
+	
 	}
-
+*/
 	//Commit to save changes...
 	OCILogoff($db_conn);
 

@@ -245,9 +245,16 @@ insert into takeCareOf values ('obvileaguer', 6);
 insert into takeCareOf values ('quinzelqueen', 7);
 insert into takeCareOf values ('honkytonk3', 1);
 
+create trigger childToyParticipation
+	after insert or update on Child
+		referencing new as new old as old
+		for each row
+		begin 
+		if exists ((select CID from Child)
+					except
+					(select distinct CID from Toy_isFor))
+		then raise_application_error(-20999, 'This child doesn''t have a toy');
+		end if;
 
---CONSTRAINTS--
-alter table ManagerElf
-add constraint managerParticipation 
-check (uname in (select Muname 
-				from FulltimeElf_mng_mon));
+		end;
+/

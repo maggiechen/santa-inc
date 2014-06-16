@@ -73,7 +73,7 @@ function createQueryString($tab) {
 
 	global $A_name, $A_pwd;
 
-	$retval =	"select * 
+	$retval =	"select uname, pw 
 				from ".$tab."  where uname = '" .$A_name. "' and pw = 
 				'" .$A_pwd. "'";
  	//echo "<br>About to execute: ".$retval."</br>";
@@ -163,7 +163,7 @@ if ($oraconn) {
 	$_SESSION['role']=$role; // save info to pass on to next page
 
 
-	header("location: ".$role."wrapper.php");
+	header("location: ".$role.".php");
 	exit();
 	
  } else {
