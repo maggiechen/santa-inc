@@ -1,11 +1,9 @@
-
-<p> Search reindeer by sleigh:</p>
 <p>
 <form method = "POST" action = "union.php">
-<p><input type = "text" name = "reindeerSleigh"> </p>
-<p> <input type = "submit" value = "Search" name = "submit"> </p>
 </form>
 </p>
+
+<img src="http://hardcoversandheroines.files.wordpress.com/2013/12/elf04.gif" />
 
 
 <?php
@@ -98,28 +96,26 @@ function printResult($result) { //prints results from a select statement
 // Connect Oracle...
 if ($db_conn) {
 
-	//Print the name of the intern's trainer
-	echo "<br> Trainer name: <br>"; 
-	$trainernamequery = executePlainSQL("select f.name as name from InternElf_train i, FulltimeElf_mng_mon f where i.funame = f.uname and i.uname = '".$u_name."'");	
-	while ($row = OCI_Fetch_Array($trainernamequery, OCI_BOTH))
-		echo "<p>".$row[0]."</p>";
+	echo "<style>
+		table {
+    		border-collapse: collapse;
+		}
 
+		table, td, th {
+		    border: 1px solid black;
+		}									
+		</style>";
 
-	
-	$reindeerquery = executePlainSQL("select * from takeCareOf t, Reindeer_drives r where t.stall = r.stall and t.iuname = '".$u_name."'");
+	//Print info about managers and fulltime elves
+	echo "<br> Information About Managers and Fulltime Elves : "; 
 
-	echo "<br>Reindeer under your care:<br>";
+	$fulltimequery = executePlainSQL("select f.Muname, f.uname, f.wages, f.insurance from UnionWorker u, FulltimeElf_mng_mon f where u.uname = f.Uniname and u.Uname = '".$u_name."'");
 	echo "<table>";
-	echo "<tr><th>Name</th><th>Stall #</th><th>Diet</th><th>Sleigh model</th><th>Sleigh Serial</th></tr>";
-	while ($row = OCI_Fetch_Array($reindeerquery, OCI_BOTH)) {
-		echo "<tr><td>" . $row["NAME"] . "</td><td>" . $row["STALL"] . "</td><td>".$row["DIET"]."</td><td>".$row["SMODEL"]."</td><td>".$row["SSERIAL"]."</td></tr>"; //or just use "echo $row[0]" 
+	echo "<tr><th>Manager who bosses Fulltime Elf around</th><th>Fulltime Elf</th><th>Fulltime Elf's Wages</th><th>Fulltime Elf's Insurance</th></tr>";
+	while ($row = OCI_Fetch_Array($fulltimequery, OCI_BOTH)) {
+		echo "<tr><td>".$row["MUNAME"]."</td><td>".$row["UNAME"]."</td><td>$".$row["WAGES"]."</td><td>$".$row["INSURANCE"]."</td></tr>"; 
 	}
-	echo "</table>";
-	
-	$countreindeerquery = executePlainSQL("select count(r.stall) from takeCareOf t, Reindeer_drives r where t.stall = r.stall and t.iuname = '".$u_name."'");
-	$row = OCI_Fetch_Array($countreindeerquery, OCI_BOTH);
-	echo "<p> You take care of <b>".$row[0]."</b> reindeer.</p>";
-
+	echo "</table>";	
 
 	if (array_key_exists('reindeerSleigh', $_POST)) {			//Request reindeer info given sleigh
 		$sleighName  = $_POST["reindeerSleigh"];  //Get the sleighname from the form
@@ -132,8 +128,6 @@ if ($db_conn) {
 			echo "<tr><td>" . $row["NAME"] . "</td><td>" . $row["STALL"] . "</td><td>".$row["DIET"]."</td><td>".$row["SMODEL"]."</td><td>".$row["SSERIAL"]."</td></tr>"; //or just use "echo $row[0]" 
 		}
 		echo "</table>";
-	
-
 	}
 
 
