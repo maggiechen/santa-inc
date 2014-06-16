@@ -5,12 +5,12 @@ to all the children of the world. After nearly 2 millenia of hard work and dedic
 Santa Inc. has become the forefront of holiday spirit and celebration.</p>
 
 
-
-<p id = "sign-up-button">
+<!-- don't need this but im not deleting this for now-->
+<!--<p id = "sign-up-button">
 <form method="POST" action="santa-inc.php">
 <p><input type="submit" value="Sign up" name="signup"></p>
 </form>
-</p>
+</p>-->
 
 <p id = "login-button">
 <form method="POST" action="santa-inc.php">
@@ -23,9 +23,9 @@ Santa Inc. has become the forefront of holiday spirit and celebration.</p>
 
 <?php
 
-if (array_key_exists('signup', $_POST)) {
+/*if (array_key_exists('signup', $_POST)) {
 	header("location: signup.php");
-}
+}*/
 
 if (array_key_exists('login', $_POST)) {
 	header("location: login.php");

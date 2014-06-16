@@ -1,4 +1,4 @@
-<p> This is the signup page </p>
+<p> This is the signup page </p>			<!-- Defunct page as of now-->
 
 <p id = "select-session-button">
 <form method="POST" action="checklogin.php">

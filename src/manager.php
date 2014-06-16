@@ -1,8 +1,13 @@
 
-<p> Search reindeer by sleigh:</p>
-<p>
-<form method = "POST" action = "managers.php">
-<p><input type = "text" name = "reindeerSleigh"> </p>
+<p>Add employees to the table</p>
+<form method = "POST" action = "manager.php">
+<p>Employee name: <input type = "text", name = "employeeuname"> 
+Assigned Username: <input type = "text", name = "empname">
+Assigned Password: <input type = "text", name = "apw"> 
+Wage: <input type = "text", name = "uwage"> 
+Insurance: <input type = "text", name = "uins">
+Union worker assigned: <input type = "text", name = "uuniname">
+
 <p> <input type = "submit" value = "Search" name = "submit"> </p>
 </form>
 </p>
@@ -98,10 +103,9 @@ function printResult($result) { //prints results from a select statement
 // Connect Oracle...
 if ($db_conn) {
 
-	//Print the name of the intern's trainer
-	echo "<br> Trainer name: <br>"; 
-	$trainernamequery = executePlainSQL("select f.name as name from InternElf_train i, FulltimeElf_mng_mon f where i.funame = f.uname and i.uname = '".$u_name."'");	
-	while ($row = OCI_Fetch_Array($trainernamequery, OCI_BOTH))
+	//Insert employees or interns into the tables	
+	$trainernamequery = executePlainSQL("insert into");	
+	while ($row = OCI_Fetch_Array( $trainernamequery, OCI_BOTH))
 		echo "<p>".$row[0]."</p>";
 
 
