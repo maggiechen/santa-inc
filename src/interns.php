@@ -1,3 +1,14 @@
+<style>
+		table {
+    		border-collapse: collapse;
+		}
+
+		table, td, th {
+		    border: 1px solid black;
+		}
+		</style>
+
+
 
 <p> Search reindeer by sleigh:</p>
 <p>
@@ -98,16 +109,7 @@ function printResult($result) { //prints results from a select statement
 // Connect Oracle...
 if ($db_conn) {
 
-	echo "<style>
-		table {
-    		border-collapse: collapse;
-		}
-
-		table, td, th {
-		    border: 1px solid black;
-		}
-		</style>";
-
+	
 	//Print the name of the intern's trainer
 	echo "<br> Trainer name: <br>"; 
 	$trainernamequery = executePlainSQL("select f.name as name from InternElf_train i, FulltimeElf_mng_mon f where i.funame = f.uname and i.uname = '".$u_name."'");	

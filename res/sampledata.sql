@@ -71,7 +71,8 @@ insert into Child values ('Harleen Quinzel', 40.7172, -74.0053, 5, 2, 3872533);
 insert into Child values ('Barry Allen', 39.3240, -82.0940, 8, 8, 2382753);
 insert into Child values ('Richard Grayson', 40.7169, -74.0050, 4, 7, 9873002);
 insert into Child values ('Wally West', 39.3247, -82.0937, 5, 8, 1238758);
-insert into Child values ('Oliver Queen', 37.4230, -122.1648, 11, 4, 938572);
+insert into Child values ('Oliver Queen', 37.4230, -122.1648, 4, 11, 938572);
+insert into Child values ('Thea Queen', 37.4230, -122.1648, 6, 4, 53435);
 
 create table Toy_isFor (
 	iModel integer,
@@ -245,4 +246,5 @@ insert into takeCareOf values ('assassin.of.the.night', 4);
 insert into takeCareOf values ('obvileaguer', 6);
 insert into takeCareOf values ('quinzelqueen', 7);
 insert into takeCareOf values ('honkytonk3', 1);
+
 
