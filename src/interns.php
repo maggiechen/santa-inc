@@ -121,7 +121,7 @@ if ($db_conn) {
 	if (array_key_exists('reindeerSleigh', $_POST)) {			//Request reindeer info given sleigh
 		$sleighName  = $_POST["reindeerSleigh"];  //Get the sleighname from the form
 
-		$reinsleighquery = executePlainSQL("select * from Reindeer_drives r, Sleigh s where s.sName = '" .$sleighName. "' and s.sModel = r.sModel");		
+		$reinsleighquery = executePlainSQL("select * from Reindeer_drives r, Sleigh s where s.sName = '" .$sleighName. "' and s.sModel = r.sModel and s.sSerial = r.sSerial");		
 		while ($row = OCI_Fetch_Array($reinsleighquery, OCI_BOTH))
 			echo "<p>".$row[0]."</p>";
 
