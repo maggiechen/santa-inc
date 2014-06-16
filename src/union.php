@@ -1,7 +1,7 @@
 
 <p> Search reindeer by sleigh:</p>
 <p>
-<form method = "POST" action = "unionworkers.php">
+<form method = "POST" action = "union.php">
 <p><input type = "text" name = "reindeerSleigh"> </p>
 <p> <input type = "submit" value = "Search" name = "submit"> </p>
 </form>
