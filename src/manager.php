@@ -1,17 +1,12 @@
+<style>
+		table {
+    		border-collapse: collapse;
+		}
 
-<p>Add employees to the table</p>
-<form method = "POST" action = "manager.php">
-<p>Employee name: <input type = "text", name = "employeeuname"> 
-Assigned Username: <input type = "text", name = "empname">
-Assigned Password: <input type = "text", name = "apw"> 
-Wage: <input type = "text", name = "uwage"> 
-Insurance: <input type = "text", name = "uins">
-Union worker assigned: <input type = "text", name = "uuniname">
-
-<p> <input type = "submit" value = "Search" name = "submit"> </p>
-</form>
-</p>
-
+		table, td, th {
+		    border: 1px solid black;
+		}
+		</style>
 
 <?php
 ini_set('session.save_path','sessions'); //save session to sessions folder
