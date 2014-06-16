@@ -4,6 +4,8 @@ owned company, lead by the visionary Nicholas Claus. Its goal is to deliver pres
 to all the children of the world. After nearly 2 millenia of hard work and dedication, 
 Santa Inc. has become the forefront of holiday spirit and celebration.</p>
 
+
+
 <p id = "sign-up-button">
 <form method="POST" action="santa-inc.php">
 <p><input type="submit" value="Sign up" name="signup"></p>
@@ -15,6 +17,8 @@ Santa Inc. has become the forefront of holiday spirit and celebration.</p>
 <p><input type="submit" value="Log in" name="login"></p>
 </form>
 </p>
+
+<img src="http://th08.deviantart.net/fs70/300W/f/2013/355/a/5/reindeer__reiner_x_reader__by_gamefox1212-d6ysfgu.jpg" />
 
 
 <?php
