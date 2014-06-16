@@ -130,11 +130,22 @@ if ($db_conn) {
 			echo "<tr><td>".$row["NAME"]."</td><td>".$row["UNAME"]."</td><td>".$row["INSTITUTION"]."</td><td>".$row["SID"]."</td><td>".$row["STARTDATE"]."</td><td>".$row["DURATION"]." months</td></tr>"; 
 		}
 		echo "</table>"; 
+
+		echo "<p>These children don't have toys yet:</p>";
+		$notoys = executePlainSQL("SELECT c.cname, c.rating, c.age, c.cid, c.lat, c.lon FROM Child c LEFT OUTER JOIN Toy_isFor t ON t.CID=c.CID WHERE t.status IS NULL");
+
+
+		echo "<p>Toyless children :(</p>";
+		echo "<table>";
+		echo "<tr><th>Name</th><th>Rating</th><th>Age</th><th>Child ID</th><th>GPS coordinates</th></tr>";
+
+		while ($row = OCI_Fetch_Array($notoys, OCI_BOTH)) {
+			echo "<tr><td>".$row["CNAME"]."</td><td>".$row["RATING"]."</td><td>".$row["AGE"]."</td><td>".$row["CID"]."</td><td>".$row["LAT"].", ".$row["LON"]."</td></tr>"; 
+		}
+		echo "</table>"; 
 	}
 
-	echo "<p>These children don't have toys yet:</p>";
-	$notoys = executePlainSQL("SELECT * FROM Child c LEFT OUTER JOIN Toy_isFor t ON t.CID=c.CID WHERE t.status IS NULL;");
-
+	
 	//Commit to save changes...
 	OCILogoff($db_conn);
 

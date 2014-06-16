@@ -103,12 +103,6 @@ function printResult($result) { //prints results from a select statement
 // Connect Oracle...
 if ($db_conn) {
 
-	//Insert employees or interns into the tables	
-	$trainernamequery = executePlainSQL("insert into");	
-	while ($row = OCI_Fetch_Array( $trainernamequery, OCI_BOTH))
-		echo "<p>".$row[0]."</p>";
-
-
 	
 	$reindeerquery = executePlainSQL("select * from takeCareOf t, Reindeer_drives r where t.stall = r.stall and t.iuname = '".$u_name."'");
 

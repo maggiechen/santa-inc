@@ -1,6 +1,6 @@
 <p>
 <form method = "POST" action = "fulltime.php">
-<p> <input type = "submit" value = "Edit" name = "edit"> </p>
+<p> <input type = "submit" value = "Edit interns and toyless children" name = "edit"> </p>
 </form>
 </p>
 

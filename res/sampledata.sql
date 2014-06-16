@@ -16,6 +16,7 @@ drop table Item cascade constraints;
 drop table Toy_isFor cascade constraints;
 drop table Sleigh cascade constraints;
 drop table Child cascade constraints;
+drop table Wants cascade constraints;
 drop table Supplier cascade constraints;
 drop table Supplies cascade constraints;
 drop table ManagerElf cascade constraints;
@@ -74,6 +75,28 @@ insert into Child values ('Wally West', 39.3247, -82.0937, 5, 8, 1238758);
 insert into Child values ('Oliver Queen', 37.4230, -122.1648, 4, 11, 938572);
 insert into Child values ('Thea Queen', 37.4230, -122.1648, 6, 4, 53435);
 
+create table Wants (
+CID integer, 
+iModel integer,
+iSerial integer,
+primary key(CID, iModel, iSerial),
+foreign key (iModel, iSerial) references Item(iModel, iSerial),
+foreign key (CID) references Child(CID));
+
+insert into Wants values (2939539,20, 39852);
+insert into Wants values (9873002, 852, 432108);
+insert into Wants values (9873002, 1, 1);
+
+insert into Wants values (938572, 20, 2953);
+insert into Wants values (938572, 76, 16593);
+insert into Wants values ( 938572, 58, 82752);
+insert into Wants values ( 938572, 1, 1);
+insert into Wants values ( 938572, 852, 432108);
+insert into Wants values (938572, 32, 65853);
+insert into Wants values ( 938572, 6874, 11586);
+insert into Wants values ( 938572, 21, 423);
+--Oliver Queen is a greedy child 
+
 create table Toy_isFor (
 	iModel integer,
 	iSerial integer,
@@ -81,11 +104,11 @@ create table Toy_isFor (
 	status integer, 
 	sModel integer not null,
 	sSerial integer not null,
-CID integer not null unique,
-PRIMARY KEY (iModel, iSerial),
-foreign key (iModel, iSerial) references Item (iModel, iSerial),
-foreign key (sModel, sSerial) references Sleigh (sModel, sSerial),
-foreign key (CID) references Child (CID));	
+	CID integer not null unique,
+	PRIMARY KEY (iModel, iSerial),
+	foreign key (iModel, iSerial) references Item (iModel, iSerial),
+	foreign key (sModel, sSerial) references Sleigh (sModel, sSerial),
+	foreign key (CID) references Child (CID));	
 
 insert into Toy_isFor values (20, 39852, 8, 0, 9862, 458, 2939539);
 insert into Toy_isFor values (76, 16593, 9, 3, 9862, 458, 8372959);

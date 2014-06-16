@@ -18,7 +18,7 @@ Santa Inc. has become the forefront of holiday spirit and celebration.</p>
 </form>
 </p>
 
-<img src="http://th08.deviantart.net/fs70/300W/f/2013/355/a/5/reindeer__reiner_x_reader__by_gamefox1212-d6ysfgu.jpg" />
+<marquee><img src="http://th08.deviantart.net/fs70/300W/f/2013/355/a/5/reindeer__reiner_x_reader__by_gamefox1212-d6ysfgu.jpg" /></marquee>
 
 
 <?php
