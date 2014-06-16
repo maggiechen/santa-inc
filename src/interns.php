@@ -111,8 +111,7 @@ if ($db_conn) {
 
 
 	if (array_key_exists('reindeer', $_POST)) {	//Request reindeer tuple info
-		
-		echo "REINDER";
+		echo "testing: REINDER";
 		$reindeerquery = executePlainSQL("select * from takeCareOf t, Reindeer_drives r where t.stall = r.stall and t.iuname = '".$u_name."'");
 		while ($row = OCI_Fetch_Array($reindeerquery, OCI_BOTH))
 				echo "<p>".$row[0]."</p>".$row[1]."</p>".$row[2]."</p>".$row[3]."</p>";
@@ -121,19 +120,13 @@ if ($db_conn) {
 	if (array_key_exists('reindeerSleigh', $_POST)) {			//Request reindeer info given sleigh
 		$sleighName  = $_POST["reindeerSleigh"];  //Get the sleighname from the form
 
-		$reinsleighquery = executePlainSQL("select * from Reindeer_drives r, Sleigh s where s.sName = '" .$sleighName. "' and s.sModel = r.sModel");		
+		$reinsleighquery = executePlainSQL("select * from Reindeer_drives r, Sleigh s where s.sName = '" .$sleighName. "' and s.sModel = r.sModel and s.sSerial = r.sSerial");		
 		while ($row = OCI_Fetch_Array($reinsleighquery, OCI_BOTH))
 			echo "<p>".$row[0]."</p>";
 
 	}
-/*
-	if ($_POST && $success) {
-		//POST-REDIRECT-GET
-		header("location: interns.php");
-	} else {
-	
-	}
-*/
+
+
 	//Commit to save changes...
 	OCILogoff($db_conn);
 
