@@ -98,6 +98,16 @@ function printResult($result) { //prints results from a select statement
 // Connect Oracle...
 if ($db_conn) {
 
+	echo "<style>
+		table {
+    		border-collapse: collapse;
+		}
+
+		table, td, th {
+		    border: 1px solid black;
+		}
+		</style>";
+
 	//Print the name of the intern's trainer
 	echo "<br> Trainer name: <br>"; 
 	$trainernamequery = executePlainSQL("select f.name as name from InternElf_train i, FulltimeElf_mng_mon f where i.funame = f.uname and i.uname = '".$u_name."'");	
@@ -123,13 +133,13 @@ if ($db_conn) {
 
 	if (array_key_exists('reindeerSleigh', $_POST)) {			//Request reindeer info given sleigh
 		$sleighName  = $_POST["reindeerSleigh"];  //Get the sleighname from the form
-		$reinsleighquery = executePlainSQL("select * from Reindeer_drives r, Sleigh s where s.sName like '%" .$sleighName. "%' and s.sModel = r.sModel and s.sSerial = r.sSerial");		
+		$reinsleighquery = executePlainSQL("select * from Reindeer_drives r, Sleigh s where LOWER(s.sName) like LOWER('%" .$sleighName. "%') and s.sModel = r.sModel and s.sSerial = r.sSerial");		
 
-		echo "<br>Search results for '".$sleighName."'': <br>";
+		echo "<br>Search results for '".$sleighName."': <br>";
 		echo "<table>";
-		echo "<tr><th>Name</th><th>Stall #</th><th>Diet</th><th>Sleigh model</th><th>Sleigh Serial</th></tr>";
+		echo "<tr><th>Name</th><th>Stall #</th><th>Diet</th><th>Sleigh model</th><th>Sleigh Serial</th><th>Sleigh Name</th></tr>";
 		while ($row = OCI_Fetch_Array($reinsleighquery, OCI_BOTH)) {
-			echo "<tr><td>" . $row["NAME"] . "</td><td>" . $row["STALL"] . "</td><td>".$row["DIET"]."</td><td>".$row["SMODEL"]."</td><td>".$row["SSERIAL"]."</td></tr>"; //or just use "echo $row[0]" 
+			echo "<tr><td>" . $row["NAME"] . "</td><td>" . $row["STALL"] . "</td><td>".$row["DIET"]."</td><td>".$row["SMODEL"]."</td><td>".$row["SSERIAL"]."</td><td>" .$row["SNAME"]. "</td></tr>"; //or just use "echo $row[0]" 
 		}
 		echo "</table>";
 	
