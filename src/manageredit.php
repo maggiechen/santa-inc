@@ -1,11 +1,62 @@
+<style>
+		table {
+    		border-collapse: collapse;
+		}
 
-<p> Search reindeer by sleigh:</p>
-<p>
-<form method = "POST" action = "managers.php">
-<p><input type = "text" name = "reindeerSleigh"> </p>
-<p> <input type = "submit" value = "Search" name = "submit"> </p>
+		table, td, th {
+		    border: 1px solid black;
+		}
+		</style>
+<p>Add a new employee</p>
+<form method = "POST" action = "manager.php">
+<table>
+<tr> 
+	<td><th>Employee name</th></td> <td> <input type = "text", name = "employeeuname"> </td>
+</tr>
+<tr>
+	<td><th>Assigned Username</th></td> <td><input type = "text", name = "empname"></td>
+</tr>
+<tr>
+	<td><th>Assigned Password</th></td> <td><input type = "text", name = "apw"> </td>
+</tr>
+<tr>
+	<td><th>Wage</th></td> <td><input type = "text", name = "uwage"> </td>
+</tr>
+<tr>
+	<td><th>Insurance</th></td><td> <input type = "text", name = "uins"></td>
+</tr>
+<tr>
+	<td><th>Union worker assigned</th></td><td> <input type = "text", name = "uuniname"></td>
+</table>
+<p> <input type = "submit" value = "Add" name = "submit"> </p>
 </form>
 </p>
+
+<p>Add a new intern</p>
+<form method = "POST" action = "manager.php">
+<table>
+<tr> 
+	<td><th>Intern name</th></td> <td> <input type = "text", name = "iuname"> </td>
+</tr>
+<tr>
+	<td><th>Assigned Username</th></td> <td><input type = "text", name = "iname"></td>
+</tr>
+<tr>
+	<td><th>Assigned Password</th></td> <td><input type = "text", name = "ipw"> </td>
+</tr>
+<tr>
+	<td><th>Institution</th></td> <td><input type = "text", name = "insti"> </td>
+</tr>
+<tr>
+	<td><th>Student ID</th></td><td> <input type = "text", name = "SID"></td>
+</tr>
+<tr>
+	<td><th>Union worker assigned</th></td><td> <input type = "text", name = "uuniname"></td>
+</table>
+<p> <input type = "submit" value = "Add" name = "submit"> </p>
+</form>
+</p>
+
 
 
 <?php
