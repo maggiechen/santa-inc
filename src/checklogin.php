@@ -148,9 +148,10 @@ if ($oraconn) {
 
 	if(!$loginsuccess){
 	   // the name and password are not in the table
-	  echo "<p>Sorry, that's not a correct username/password combination.</p>";
-	  echo "<p>You entered the username ".$A_name." and the password ".$A_pwd."</p>";
+	   echo "<p>Sorry, that's not a correct username/password combination.</p>";
+	   echo "<p>You entered the username ".$A_name." and the password ".$A_pwd."</p>";
 	   header("location: login.php");
+	   exit();
 	 }
 
 
