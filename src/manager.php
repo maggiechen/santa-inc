@@ -8,6 +8,18 @@
 		}
 		</style>
 
+<form method = "POST" action = "manager.php">
+<p>
+Select the employee based on # of interns:
+<select name="item"> 
+<option>minimum</option>
+<option>maximum</option>
+<option>all</option>
+
+</p>
+<p><input type = "submit" value = "Enter" name = "choice"></p>
+</form>
+
 <?php
 ini_set('session.save_path','sessions'); //save session to sessions folder
 session_start();
@@ -98,54 +110,49 @@ function printResult($result) { //prints results from a select statement
 // Connect Oracle...
 if ($db_conn) {
 
-	$makeview = executePlainSQL("CREATE OR REPLACE VIEW numInterns(name, uname, wages, insurance, interncount) AS
-								SELECT f.name, f.uname, f.wages, f.insurance, count(i.uname)
-								FROM FulltimeElf_mng_mon f, InternElf_train i
-								WHERE i.funame = f.uname AND f.muname = '".$u_name."'
-								GROUP BY f.uname, f.wages, f.insurance, f.name");
-	$intmin = executePlainSQL("SELECT name, uname, wages, insurance, interncount
-								FROM numInterns
-								WHERE interncount = (SELECT MIN(interncount)
-													FROM numInterns)");
-	$intmax = executePlainSQL("SELECT name, uname, wages, insurance, interncount
-								FROM numInterns
-								WHERE interncount = (SELECT MAX(interncount)
-													FROM numInterns)");
-
-	echo "<br>Worker(s) with least interns:<br>";
-	echo "<table>";
-	echo "<tr><th>Name</th><th>Username #</th><th>Wages</th><th>Insurance</th><th># Interns</th></tr>";
-	while ($row = OCI_Fetch_Array($intmin, OCI_BOTH)) {
-		echo "<tr><td>" . $row["NAME"] . "</td><td>" . $row["UNAME"] . "</td><td>".$row["WAGES"]."</td><td>".$row["INSURANCE"]."</td><td>".$row["INTERNCOUNT"]."</td></tr>"; //or just use "echo $row[0]" 
-	}
-	echo "</table>";
-
-
-	echo "<br>Worker(s) with most interns:<br>";
-	echo "<table>";
-	echo "<tr><th>Name</th><th>Username #</th><th>Wages</th><th>Insurance</th><th># Interns</th></tr>";
-	while ($row = OCI_Fetch_Array($intmax, OCI_BOTH)) {
-		echo "<tr><td>" . $row["NAME"] . "</td><td>" . $row["UNAME"] . "</td><td>".$row["WAGES"]."</td><td>".$row["INSURANCE"]."</td><td>".$row["INTERNCOUNT"]."</td></tr>"; //or just use "echo $row[0]" 
-	}
-	echo "</table>";
-
-
-
-	if (array_key_exists('reindeerSleigh', $_POST)) {			//Request reindeer info given sleigh
-		$sleighName  = $_POST["reindeerSleigh"];  //Get the sleighname from the form
-		$reinsleighquery = executePlainSQL("select * from Reindeer_drives r, Sleigh s where s.sName like '%" .$sleighName. "%' and s.sModel = r.sModel and s.sSerial = r.sSerial");		
-
-		echo "<br>Search results for '".$sleighName."'': <br>";
-		echo "<table>";
-		echo "<tr><th>Name</th><th>Stall #</th><th>Diet</th><th>Sleigh model</th><th>Sleigh Serial</th></tr>";
-		while ($row = OCI_Fetch_Array($reinsleighquery, OCI_BOTH)) {
-			echo "<tr><td>" . $row["NAME"] . "</td><td>" . $row["STALL"] . "</td><td>".$row["DIET"]."</td><td>".$row["SMODEL"]."</td><td>".$row["SSERIAL"]."</td></tr>"; //or just use "echo $row[0]" 
+	if (array_key_exists('choice', $_POST)){
+		$makeview = executePlainSQL("CREATE OR REPLACE VIEW numInterns(name, uname, wages, insurance, interncount) AS
+									SELECT f.name, f.uname, f.wages, f.insurance, count(i.uname)
+									FROM FulltimeElf_mng_mon f, InternElf_train i
+									WHERE i.funame = f.uname AND f.muname = '".$u_name."'
+									GROUP BY f.uname, f.wages, f.insurance, f.name");
+		
+		if ($_POST['item'] == "minimum"){
+			$intmin = executePlainSQL("SELECT name, uname, wages, insurance, interncount
+									FROM numInterns
+									WHERE interncount = (SELECT MIN(interncount)
+														FROM numInterns)");
+			echo "<br>Worker(s) with least interns:<br>";
+			echo "<table>";
+			echo "<tr><th>Name</th><th>Username #</th><th>Wages</th><th>Insurance</th><th># Interns</th></tr>";
+			while ($row = OCI_Fetch_Array($intmin, OCI_BOTH)) {
+				echo "<tr><td>" . $row["NAME"] . "</td><td>" . $row["UNAME"] . "</td><td>".$row["WAGES"]."</td><td>".$row["INSURANCE"]."</td><td>".$row["INTERNCOUNT"]."</td></tr>"; //or just use "echo $row[0]" 
+			}
+			echo "</table>";
+		} else if ($_POST['item'] == "maximum"){
+			$intmin = executePlainSQL("SELECT name, uname, wages, insurance, interncount
+									FROM numInterns
+									WHERE interncount = (SELECT MAX(interncount)
+														FROM numInterns)");
+			echo "<br>Worker(s) with most interns:<br>";
+			echo "<table>";
+			echo "<tr><th>Name</th><th>Username #</th><th>Wages</th><th>Insurance</th><th># Interns</th></tr>";
+			while ($row = OCI_Fetch_Array($intmin, OCI_BOTH)) {
+				echo "<tr><td>" . $row["NAME"] . "</td><td>" . $row["UNAME"] . "</td><td>".$row["WAGES"]."</td><td>".$row["INSURANCE"]."</td><td>".$row["INTERNCOUNT"]."</td></tr>"; //or just use "echo $row[0]" 
+			}
+			echo "</table>";
+		} else if ($_POST['item'] == "all") {
+			$allcount = executePlainSQL ("SELECT * FROM numInterns");
+			echo "<br># interns for all workers:<br>";
+			echo "<table>";
+			echo "<tr><th>Name</th><th>Username #</th><th>Wages</th><th>Insurance</th><th># Interns</th></tr>";
+			while ($row = OCI_Fetch_Array($allcount, OCI_BOTH)) {
+				echo "<tr><td>" . $row["NAME"] . "</td><td>" . $row["UNAME"] . "</td><td>".$row["WAGES"]."</td><td>".$row["INSURANCE"]."</td><td>".$row["INTERNCOUNT"]."</td></tr>"; //or just use "echo $row[0]" 
+			}
+			echo "</table>";
 		}
-		echo "</table>";
-	
 
 	}
-
 
 	//Commit to save changes...
 	OCILogoff($db_conn);
