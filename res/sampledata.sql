@@ -179,7 +179,7 @@ create table FulltimeElf_mng_mon(
 	wages decimal (10, 2),
 	insurance decimal (10, 2),
 	Uniname char(40) not null,
-name char(40), 
+	name char(40), 
 	PRIMARY KEY (uname),
 	foreign key (Uniname) references UnionWorker (uname),
 	foreign key (Muname) references ManagerElf (uname));
@@ -269,5 +269,3 @@ insert into takeCareOf values ('assassin.of.the.night', 4);
 insert into takeCareOf values ('obvileaguer', 6);
 insert into takeCareOf values ('quinzelqueen', 7);
 insert into takeCareOf values ('honkytonk3', 1);
-
-

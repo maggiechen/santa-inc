@@ -1,3 +1,14 @@
+<style>
+		table {
+    		border-collapse: collapse;
+		}
+
+		table, td, th {
+		    border: 1px solid black;
+		}
+		</style>
+
+
 <p>
 <form method = "POST" action = "fulltime.php">
 <p> <input type = "submit" value = "Edit interns and toyless children" name = "edit"> </p>
@@ -98,8 +109,28 @@ if ($db_conn) {
 	if (array_key_exists('edit', $_POST)) {
 		header("location: fulltimeedit.php");
 	}
+
+	$greedyquery = executePlainSQL("SELECT *
+									FROM Child c
+									WHERE NOT EXISTS  ((SELECT DISTINCT i.iModel
+														FROM Item i)
+														MINUS
+														(SELECT DISTINCT w.iModel
+														FROM Wants w
+														where w.CID = c.CID))");
+
+	echo "<p>Greedy children who want every item:</p>";
+	echo "<table>";
+	echo "<tr><th>Name</th><th>Rating</th><th>Age</th><th>Child ID</th><th>GPS coordinates</th></tr>";
+
+	while ($row = OCI_Fetch_Array($greedyquery, OCI_BOTH)) {
+		echo "<tr><td>".$row["CNAME"]."</td><td>".$row["RATING"]."</td><td>".$row["AGE"]."</td><td>".$row["CID"]."</td><td>".$row["LAT"].", ".$row["LON"]."</td></tr>"; 
+	}
+	echo "</table>"; 
 	//Commit to save changes...
 	OCILogoff($db_conn);
+
+
 
 } else {
 	echo "cannot connect";
