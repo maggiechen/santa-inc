@@ -98,20 +98,37 @@ function printResult($result) { //prints results from a select statement
 // Connect Oracle...
 if ($db_conn) {
 
-	
-	$reindeerquery = executePlainSQL("select * from takeCareOf t, Reindeer_drives r where t.stall = r.stall and t.iuname = '".$u_name."'");
+	$makeview = executePlainSQL("CREATE OR REPLACE VIEW numInterns(name, uname, wages, insurance, interncount) AS
+								SELECT f.name, f.uname, f.wages, f.insurance, count(i.uname)
+								FROM FulltimeElf_mng_mon f, InternElf_train i
+								WHERE i.funame = f.uname AND f.muname = '".$u_name."'
+								GROUP BY f.uname, f.wages, f.insurance, f.name");
+	$intmin = executePlainSQL("SELECT name, uname, wages, insurance, interncount
+								FROM numInterns
+								WHERE interncount = (SELECT MIN(interncount)
+													FROM numInterns)");
+	$intmax = executePlainSQL("SELECT name, uname, wages, insurance, interncount
+								FROM numInterns
+								WHERE interncount = (SELECT MAX(interncount)
+													FROM numInterns)");
 
-	echo "<br>Reindeer under your care:<br>";
+	echo "<br>Worker(s) with least interns:<br>";
 	echo "<table>";
-	echo "<tr><th>Name</th><th>Stall #</th><th>Diet</th><th>Sleigh model</th><th>Sleigh Serial</th></tr>";
-	while ($row = OCI_Fetch_Array($reindeerquery, OCI_BOTH)) {
-		echo "<tr><td>" . $row["NAME"] . "</td><td>" . $row["STALL"] . "</td><td>".$row["DIET"]."</td><td>".$row["SMODEL"]."</td><td>".$row["SSERIAL"]."</td></tr>"; //or just use "echo $row[0]" 
+	echo "<tr><th>Name</th><th>Username #</th><th>Wages</th><th>Insurance</th><th># Interns</th></tr>";
+	while ($row = OCI_Fetch_Array($intmin, OCI_BOTH)) {
+		echo "<tr><td>" . $row["NAME"] . "</td><td>" . $row["UNAME"] . "</td><td>".$row["WAGES"]."</td><td>".$row["INSURANCE"]."</td><td>".$row["INTERNCOUNT"]."</td></tr>"; //or just use "echo $row[0]" 
 	}
 	echo "</table>";
-	
-	$countreindeerquery = executePlainSQL("select count(r.stall) from takeCareOf t, Reindeer_drives r where t.stall = r.stall and t.iuname = '".$u_name."'");
-	$row = OCI_Fetch_Array($countreindeerquery, OCI_BOTH);
-	echo "<p> You take care of <b>".$row[0]."</b> reindeer.</p>";
+
+
+	echo "<br>Worker(s) with most interns:<br>";
+	echo "<table>";
+	echo "<tr><th>Name</th><th>Username #</th><th>Wages</th><th>Insurance</th><th># Interns</th></tr>";
+	while ($row = OCI_Fetch_Array($intmax, OCI_BOTH)) {
+		echo "<tr><td>" . $row["NAME"] . "</td><td>" . $row["UNAME"] . "</td><td>".$row["WAGES"]."</td><td>".$row["INSURANCE"]."</td><td>".$row["INTERNCOUNT"]."</td></tr>"; //or just use "echo $row[0]" 
+	}
+	echo "</table>";
+
 
 
 	if (array_key_exists('reindeerSleigh', $_POST)) {			//Request reindeer info given sleigh
