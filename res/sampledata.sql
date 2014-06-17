@@ -265,6 +265,8 @@ foreign key (Iuname) references InternElf_train(uname),
 foreign key (stall) references Reindeer_drives(stall));
 
 insert into takeCareOf values ('easterjack2', 30);
+insert into takeCareOf values ('easterjack2', 4);
+
 insert into takeCareOf values ('assassin.of.the.night', 4);
 insert into takeCareOf values ('obvileaguer', 6);
 insert into takeCareOf values ('quinzelqueen', 7);

@@ -110,6 +110,12 @@ function printResult($result) { //prints results from a select statement
 if ($db_conn) {
 
 	
+		$staq = executePlainSQL("SELECT * FROM takeCareOf");
+		while ($row = OCI_Fetch_Array($staq, OCI_BOTH)){
+			echo $row["IUNAME"];
+		}
+
+	
 	//Print the name of the intern's trainer
 	echo "<br> Trainer name: <br>"; 
 	$trainernamequery = executePlainSQL("select f.name as name from InternElf_train i, FulltimeElf_mng_mon f where i.funame = f.uname and i.uname = '".$u_name."'");	
