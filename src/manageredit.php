@@ -28,7 +28,7 @@
 <tr>
 	<td><th>Union worker assigned</th></td><td> <input type = "text", name = "uuniname"></td>
 </table>
-<p> <input type = "submit" value = "Add" name = "submit"> </p>
+<p> <input type = "submit" value = "Add" name = "submitEmployee"> </p>
 </form>
 </p>
 
@@ -51,9 +51,16 @@
 	<td><th>Student ID</th></td><td> <input type = "text", name = "SID"></td>
 </tr>
 <tr>
-	<td><th>Union worker assigned</th></td><td> <input type = "text", name = "uuniname"></td>
+	<td><th>Trainer assigned</th></td><td> <input type = "text", name = "tuname"></td>
+</tr>
+<tr>
+	<td><th>Duration</th></td><td> <input type = "text", name = "duration"></td>
+</tr>
+<tr>
+	<td><th>Start Date</th></td><td> <input type = "text", name = "sDate"></td>
+</tr>
 </table>
-<p> <input type = "submit" value = "Add" name = "submit"> </p>
+<p> <input type = "submit" value = "Add" name = "submitIntern"> </p>
 </form>
 </p>
 
@@ -65,8 +72,26 @@ session_start();
 
 $success = True; //keep track of errors so it redirects the page only if there are no errors
 $db_conn = OCILogon("ora_f8l8", "a40626103", "ug");  
-$u_name=$_SESSION["admin_name"];  //receive username from previous form
-//echo $u_name;
+//========================================================================================================================
+//receive username from previous form
+$M_Uname=$_SESSION["admin_name"];  
+//Getting the input data from the forms for Employee
+$E_Name = $_POST['employeeuname'];
+$E_UName = $_POST['empname'];
+$E_APw = $_POST['apw'];
+$E_Wage = $_POST['uwage'];
+$E_Ins = $_POST['uins'];
+$E_UWorker = $_POST['uuniname'];
+
+//Getting the input data from the forms for Interns
+$I_name = $_POST['iuname'];
+$I_UName = $_POST['iuname'];
+$I_APw = $_POST['ipw'];
+$I_Inst = $_POST['insti'];
+$I_SID = $_POST['SID'];
+$I_Trainer = $_POST['tuname'];
+$I_Dur = $_POST['duration'];
+$I_SDate = $_POST['sDate'];
 //=========================================================================================================================
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
@@ -131,60 +156,17 @@ function executeBoundSQL($cmdstr, $list) {
 	}
 
 }
-//==========================================vvvv MODIFY THIS vvv==================================================================
-//TODO
-//Modify this so it prints out stuff depending on what you asked for it
-function printResult($result) { //prints results from a select statement
-	echo "<br>Got data from table tab1:<br>";
-	echo "<table>";
-	echo "<tr><th>ID</th><th>Name</th></tr>";
 
-	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr><td>" . $row["NID"] . "</td><td>" . $row["NAME"] . "</td></tr>"; //or just use "echo $row[0]" 
-	}
-	echo "</table>";
-
-}
 //=======================================================================================================================================
 // Connect Oracle...
 if ($db_conn) {
-
-	//Print the name of the intern's trainer
-	echo "<br> Trainer name: <br>"; 
-	$trainernamequery = executePlainSQL("select f.name as name from InternElf_train i, FulltimeElf_mng_mon f where i.funame = f.uname and i.uname = '".$u_name."'");	
-	while ($row = OCI_Fetch_Array($trainernamequery, OCI_BOTH))
-		echo "<p>".$row[0]."</p>";
-
-
-	
-	$reindeerquery = executePlainSQL("select * from takeCareOf t, Reindeer_drives r where t.stall = r.stall and t.iuname = '".$u_name."'");
-
-	echo "<br>Reindeer under your care:<br>";
-	echo "<table>";
-	echo "<tr><th>Name</th><th>Stall #</th><th>Diet</th><th>Sleigh model</th><th>Sleigh Serial</th></tr>";
-	while ($row = OCI_Fetch_Array($reindeerquery, OCI_BOTH)) {
-		echo "<tr><td>" . $row["NAME"] . "</td><td>" . $row["STALL"] . "</td><td>".$row["DIET"]."</td><td>".$row["SMODEL"]."</td><td>".$row["SSERIAL"]."</td></tr>"; //or just use "echo $row[0]" 
+	if (array_key_exists('submitEmployee', $_POST)) {			//Add employees to the table
+		$DumpValuesInEmployee = executeBoundSQL("insert into FulltimeElf_mng_mon values (" .$M_UName. "," .$E_UName. "," .$E_APw. "," .$E_Wage. "," .$E_Ins. "," .$E_UWorker. "," .$E_Name. ")");  		
 	}
-	echo "</table>";
 	
-	$countreindeerquery = executePlainSQL("select count(r.stall) from takeCareOf t, Reindeer_drives r where t.stall = r.stall and t.iuname = '".$u_name."'");
-	$row = OCI_Fetch_Array($countreindeerquery, OCI_BOTH);
-	echo "<p> You take care of <b>".$row[0]."</b> reindeer.</p>";
-
-
-	if (array_key_exists('reindeerSleigh', $_POST)) {			//Request reindeer info given sleigh
-		$sleighName  = $_POST["reindeerSleigh"];  //Get the sleighname from the form
-		$reinsleighquery = executePlainSQL("select * from Reindeer_drives r, Sleigh s where s.sName like '%" .$sleighName. "%' and s.sModel = r.sModel and s.sSerial = r.sSerial");		
-
-		echo "<br>Search results for '".$sleighName."'': <br>";
-		echo "<table>";
-		echo "<tr><th>Name</th><th>Stall #</th><th>Diet</th><th>Sleigh model</th><th>Sleigh Serial</th></tr>";
-		while ($row = OCI_Fetch_Array($reinsleighquery, OCI_BOTH)) {
-			echo "<tr><td>" . $row["NAME"] . "</td><td>" . $row["STALL"] . "</td><td>".$row["DIET"]."</td><td>".$row["SMODEL"]."</td><td>".$row["SSERIAL"]."</td></tr>"; //or just use "echo $row[0]" 
-		}
-		echo "</table>";
+	if (array_key_exists ('submitIntern', $_POST)) {
+		$DumpValuesInIntern = executeBoundSQL("insert into InternElf_train values (" .$I_UName. "," .$I_APw. "," .$I_Inst. "," .$I_SID. "," .$I_Trainer. "," .$I_name. "," .$I_Dur. "," .$I_SDate. ")"); 
 	
-
 	}
 
 
