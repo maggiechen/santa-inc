@@ -8,7 +8,7 @@
 		}
 		</style>
 <p>Add a new employee</p>
-<form method = "POST" action = "manager.php">
+<form method = "POST" action = "manageredit.php">
 <table>
 <tr> 
 	<td><th>Employee name</th></td> <td> <input type = "text", name = "employeeuname"> </td>
@@ -33,7 +33,7 @@
 </p>
 
 <p>Add a new intern</p>
-<form method = "POST" action = "manager.php">
+<form method = "POST" action = "manageredit.php">
 <table>
 <tr> 
 	<td><th>Intern name</th></td> <td> <input type = "text", name = "iuname"> </td>
@@ -162,6 +162,7 @@ function executeBoundSQL($cmdstr, $list) {
 if ($db_conn) {
 	if (array_key_exists('submitEmployee', $_POST)) {			//Add employees to the table
 		$DumpValuesInEmployee = executeBoundSQL("insert into FulltimeElf_mng_mon values (" .$M_UName. "," .$E_UName. "," .$E_APw. "," .$E_Wage. "," .$E_Ins. "," .$E_UWorker. "," .$E_Name. ")");  		
+		echo"<br> Added new employee </br>";
 	}
 	
 	if (array_key_exists ('submitIntern', $_POST)) {
