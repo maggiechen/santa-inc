@@ -226,6 +226,10 @@ insert into InternElf_train values
 ('quinzelqueen', 'mistahjay', 'SUTD', 3756612, 'blardigus', 'Harley', 6, '2014-12-3');
 insert into InternElf_train values
 ('obvileaguer', '39valoran39', 'Arkham', 346235, 'tinkerwinker', 'Demacia', 2, '2014-3-4');
+
+insert into InternElf_train values
+('notleaguer', 'alfalffa', 'Arkham', 39857235, 'tinkerwinker', 'Demacia', 2, '2014-10-10');
+
 insert into InternElf_train values
 ('assassin.of.the.night', 'creed3752', 'Gotham Uni', 324511, 'blardigus', 'Ezio', 1, '2014-5-6');
 insert into InternElf_train values
@@ -271,3 +275,16 @@ insert into takeCareOf values ('assassin.of.the.night', 4);
 insert into takeCareOf values ('obvileaguer', 6);
 insert into takeCareOf values ('quinzelqueen', 7);
 insert into takeCareOf values ('honkytonk3', 1);
+
+
+CREATE OR REPLACE TRIGGER minimumEmployment
+BEFORE DELETE
+   ON InternElf_train
+for each row
+begin
+    IF (:old.startdate > sysdate) THEN 
+        raise_application_error( -20001, 'You cannot fire an intern until they start work');
+    END IF; 
+end;
+
+/

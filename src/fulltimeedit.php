@@ -39,7 +39,7 @@ $u_name=$_SESSION["admin_name"];  //receive username from previous form
 //echo $u_name;
 //=========================================================================================================================
 
-function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
+function executePlainSQL($cmdstr, $message) { //takes a plain (no bound variables) SQL command and executes it
 	//echo "<br>running ".$cmdstr."<br>";
 	global $db_conn, $success;
 	$statement = OCIParse($db_conn, $cmdstr); 
@@ -53,7 +53,7 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 
 	$r = OCIExecute($statement, OCI_DEFAULT);
 	if (!$r) {
-		echo "<script type='text/javascript'>alert('Change denied: internships cannot last longer than 12 months');</script>";
+		echo "<script type='text/javascript'>alert('Change denied: ".$message."');</script>";
 		//echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
 		$e = oci_error($statement); // For OCIExecute errors pass the statementhandle
 		//echo htmlentities($e['message']);
@@ -70,7 +70,7 @@ if ($db_conn) {
 
 	if (array_key_exists('delin', $_POST)) {
 		$internToDelete = $_POST['deleteiuname'];
-		executePlainSQL("delete from InternElf_train where iuname = '".$internToDelete."'");
+		executePlainSQL("delete from InternElf_train where uname = '".$internToDelete."'", "You cannot fire an intern until they start work");
 		OCICommit($db_conn);
 	}
 
@@ -78,7 +78,7 @@ if ($db_conn) {
 		$newdur = $_POST['dur'];
 		$iuname = $_POST['iuname'];
 
-		executePlainSQL("update InternElf_train set duration =".$newdur." where uname = '".$iuname."'");
+		executePlainSQL("update InternElf_train set duration =".$newdur." where uname = '".$iuname."'", "12 months internship maximum");
 		OCICommit($db_conn);
 	}
 	if ($_POST && $success) {
@@ -86,7 +86,7 @@ if ($db_conn) {
 	} else {
 		// Select data...
 		
-		$interns = executePlainSQL("select * from InternElf_train i where i.funame = '".$u_name."'");
+		$interns = executePlainSQL("select * from InternElf_train i where i.funame = '".$u_name."'", "Sorry, something went wrong");
 		echo "<p>Interns you train:</p>";
 		echo "<table>";
 		echo "<tr><th>Name</th><th>Username</th><th>Institution</th><th>Student number</th><th>Start date(YY-MM-DD)</th><th>Duration</th><th>Stalls they take care of</th></tr>";
@@ -95,7 +95,7 @@ if ($db_conn) {
 			$internuser = $row["UNAME"];
 			echo "<tr><td>".$row["NAME"]."</td><td>".$internuser."</td><td>".$row["INSTITUTION"]."</td><td>".$row["SID"]."</td><td>".$row["STARTDATE"]."</td><td>".$row["DURATION"]." months</td>";
 			
-			$stallsquery = executePlainSQL("select * from takeCareOf where iuname ='".$internuser."'");
+			$stallsquery = executePlainSQL("select * from takeCareOf where iuname ='".$internuser."'", "Sorry, something went wrong");
 			echo "<td>";
 			while ($row2 = OCI_Fetch_Array($stallsquery, OCI_BOTH)) {
 				echo "<p>".$row2["STALL"]." </p>";
@@ -108,13 +108,13 @@ if ($db_conn) {
 
 		echo "<div>";
 		echo "<p><b>Stalls that all of your interns cover:</b></p>";
-		$allstalls = executePlainSQL("select t.stall from takeCareOf t, InternElf_train i where t.iuname = i.uname and i.funame = '".$u_name."'");
+		$allstalls = executePlainSQL("select t.stall from takeCareOf t, InternElf_train i where t.iuname = i.uname and i.funame = '".$u_name."'", "Sorry, something went wrong");
 		while ($row = OCI_Fetch_Array($allstalls,OCI_BOTH)) {
 			echo "<p>".$row[0]."</p>";
 		}
 		echo "</div>";
 
-		$notoys = executePlainSQL("SELECT c.cname, c.rating, c.age, c.cid, c.lat, c.lon FROM Child c LEFT OUTER JOIN Toy_isFor t ON t.CID=c.CID WHERE t.status IS NULL");
+		$notoys = executePlainSQL("SELECT c.cname, c.rating, c.age, c.cid, c.lat, c.lon FROM Child c LEFT OUTER JOIN Toy_isFor t ON t.CID=c.CID WHERE t.status IS NULL", "Sorry, something went wrong");
 
 		echo "<p>These children don't have toys yet:</p>";		
 		echo "<table>";
