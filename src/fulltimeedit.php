@@ -29,6 +29,38 @@
 	</p>
 </form>
 
+<p>Assign a toy to a child as well as a sleigh to deliver it.</p>
+<form method = "POST" action = "fulltimeedit.php">
+	<table>
+		<tr>
+			<td>CID</td><td><input type = "text" name = "cid"></td>
+		</tr>
+		<tr>
+			<td>Item Model</td><td><input type = "text" name = "imodel"></td>
+		</tr>
+		<tr>
+			<td>Item Serial</td><td><input type = "text" name = "iserial"></td>
+		</tr>
+		<tr>
+			<td>Toy Name</td><td><input type = "text" name = "itemname"></td>
+		</tr>
+		<tr>
+			<td>Rating</td><td><input type = "text" name = "rating"></td>
+		</tr>
+		<tr>
+			<td>Sleigh Model</td><td><input type = "text" name = "smodel"></td>
+		</tr>
+		<tr>
+			<td>Sleigh Serial</td><td><input type = "text" name = "sserial"></td>
+		</tr>
+		<tr>
+			<td></td><td><input type = "submit" value = "Add toy" name = "addtoy"></td>
+		</tr>
+	</table>
+
+</form>
+
+
 <?php
 ini_set('session.save_path','sessions'); //save session to sessions folder
 session_start();
@@ -74,6 +106,22 @@ if ($db_conn) {
 	if (!OCI_Fetch($doquery)){
 		header("location: login.php");
 		exit();
+	}
+
+
+	if (array_key_exists('addtoy', $_POST)) {
+		$CID = $_POST['cid'];
+		$iModel = $_POST['imodel'];
+		$iSerial = $_POST['iserial'];
+		$itemName = $_POST['itemname'];
+		$rating = $_POST['rating'];
+		$sModel = $_POST['smodel'];
+		$sSerial = $_POST['sserial'];
+
+		executePlainSQL("insert into Item values ('".$itemName."',".$iModel.",".$iSerial.")");
+		oci_commit($db_conn);
+		executePlainSQL("insert into Toy_isFor values (".$iModel.",".$iSerial.",".$rating.", 0,".$sModel.",".$sSerial.",".$CID.")");
+		oci_commit($db_conn);
 	}
 
 	if (array_key_exists('delin', $_POST)) {
@@ -122,8 +170,17 @@ if ($db_conn) {
 		}
 		echo "</div>";
 
-		$notoys = executePlainSQL("SELECT c.cname, c.rating, c.age, c.cid, c.lat, c.lon FROM Child c LEFT OUTER JOIN Toy_isFor t ON t.CID=c.CID WHERE t.status IS NULL", "Sorry, something went wrong");
+		echo "<p>Available sleighs</p>";
+		$sleighquery = executePlainSQL("select * from Sleigh where condition <> 2 and condition <> 3"); //not damaged/unusable
+		echo "<table>"; 
+		echo "<tr><th>Sleigh name</th><th>Condition</th><th>Sleigh Model</th><th>Sleigh Serial</th></tr>";
 
+		while ($row = OCI_Fetch_Array($sleighquery, OCI_BOTH)){
+			echo "<tr><td>".$row["SNAME"]."</td><td>".$row["CONDITION"]."</td><td>".$row["SMODEL"]."</td><td>".$row["SSERIAL"]."</td></tr>"; 
+		}
+		echo "</table>";
+
+		$notoys = executePlainSQL("SELECT c.cname, c.rating, c.age, c.cid, c.lat, c.lon FROM Child c LEFT OUTER JOIN Toy_isFor t ON t.CID=c.CID WHERE t.status IS NULL", "Sorry, something went wrong");
 		echo "<p>These children don't have toys yet:</p>";		
 		echo "<table>";
 		echo "<tr><th>Name</th><th>Rating</th><th>Age</th><th>Child ID</th><th>GPS coordinates</th></tr>";

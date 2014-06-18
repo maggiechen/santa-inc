@@ -47,6 +47,8 @@ sSerial integer,
 condition integer,
 sName char(40),
 PRIMARY KEY(sModel, sSerial));
+--	condition: 0 = perfect, 1 = good, 2 = damaged, 3 = unusable
+
 
 insert into Sleigh values (9862, 458, 2, '2005 Toyotair Camree');
 insert into Sleigh values (5524, 986, 0, '2013 Toyotair Camree');
@@ -63,6 +65,8 @@ rating integer,
 age integer, 
 CID integer,
 PRIMARY KEY(CID));
+--	for status, 0 = incomplete, 1 = complete, 2 = in delivery, 3 = delivered, 4 = delivery failed
+
 
 insert into Child values ('Peter Parker', 49.262288, -123.081207, 8, 12, 2939539);
 insert into Child values ('Barbara Gordon', 40.7172, -74.0059, 9, 10, 8372959);
@@ -107,6 +111,8 @@ create table Toy_isFor (
 	foreign key (iModel, iSerial) references Item (iModel, iSerial),
 	foreign key (sModel, sSerial) references Sleigh (sModel, sSerial),
 	foreign key (CID) references Child (CID));	
+--	for status, 0 = incomplete, 1 = complete, 2 = in delivery, 3 = delivered, 4 = delivery failed
+
 
 insert into Toy_isFor values (20, 39852, 8, 0, 9862, 458, 2939539);
 insert into Toy_isFor values (76, 16593, 9, 3, 9862, 458, 8372959);
