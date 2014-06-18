@@ -47,14 +47,14 @@ text-decoration: underline;
 }
 
 #tabs #Content_Area {
-padding: 0 15px;
+padding: 10px;
 clear:both;
 overflow:hidden;
 line-height:19px;
 position: relative;
-top: 20px;
+top: 0px;
 z-index: 5;
-height: 150px;
+height: 500px;
 overflow: hidden;
 }
 
@@ -74,13 +74,14 @@ document.getElementById('li_'+tab).setAttribute("class", "active");
 
 <div id="tabs">
 <ul>
-<li id="li_tab1" onclick="tab('tab1')"><a>Tab 1</a></li>
-<li id="li_tab2" onclick="tab('tab2')"><a>Tab 2</a></li>
+<li id="li_tab1" onclick="tab('tab1')"><a>Add an Employee</a></li>
+<li id="li_tab2" onclick="tab('tab2')"><a>Add an Intern</a></li>
 </ul>
 
 <div id="Content_Area">
 <div id="tab1">
-<p>Add a new employee</p>
+<br/>
+<br/>
 <form method = "POST" action = "manageredit.php">
 <table>
 <tr><td><th>Employee name</th></td> <td> <input type = "text", name = "employeeuname"> </td></tr>
@@ -95,9 +96,10 @@ document.getElementById('li_'+tab).setAttribute("class", "active");
 </div>
 
 <div id="tab2" style="display: none;">
-<p>Add a new intern</p>
 <form method = "POST" action = "manageredit.php">
 <table>
+<br/>
+<br/>
 <tr><td><th>Intern name</th></td> <td> <input type = "text", name = "iuname"> </td></tr>
 <tr><td><th>Assigned Username</th></td> <td><input type = "text", name = "iname"></td></tr>
 <tr><td><th>Assigned Password</th></td> <td><input type = "text", name = "ipw"> </td></tr>
