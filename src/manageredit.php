@@ -1,4 +1,4 @@
-<style>
+<style type = "text/css">
 		table {
     		border-collapse: collapse;
 		}
@@ -6,64 +6,111 @@
 		table, td, th {
 		    border: 1px solid black;
 		}
-		</style>
+	#tabs ul {
+padding: 0px;
+margin: 0px;
+margin-left: 10px;
+list-style-type: none;
+}
+
+#tabs ul li {
+display: inline-block;
+clear: none;
+float: left;
+height: 24px;
+}
+
+#tabs ul li a {
+position: relative;
+margin-top: 16px;
+display: block;
+margin-left: 6px;
+line-height: 24px;
+padding-left: 10px;
+background: #f6f6f6;
+z-index: 9999;
+border: 1px solid #ccc;
+border-bottom: 0px;
+-moz-border-radius-topleft: 4px;
+border-top-left-radius: 4px;
+-moz-border-radius-topright: 4px;
+border-top-right-radius: 4px;
+width: 130px;
+color: #000000;
+text-decoration: none;
+font-weight: bold;
+}
+
+#tabs ul li a:hover {
+text-decoration: underline;
+}
+
+#tabs #Content_Area {
+padding: 0 15px;
+clear:both;
+overflow:hidden;
+line-height:19px;
+position: relative;
+top: 20px;
+z-index: 5;
+height: 150px;
+overflow: hidden;
+}
+
+p { padding-left: 15px; }
+</style>	
+
+<script type="text/javascript">
+function tab(tab) {
+document.getElementById('tab1').style.display = 'none';
+document.getElementById('tab2').style.display = 'none';
+document.getElementById('li_tab1').setAttribute("class", "");
+document.getElementById('li_tab2').setAttribute("class", "");
+document.getElementById(tab).style.display = 'block';
+document.getElementById('li_'+tab).setAttribute("class", "active");
+}
+</script>
+
+<div id="tabs">
+<ul>
+<li id="li_tab1" onclick="tab('tab1')"><a>Tab 1</a></li>
+<li id="li_tab2" onclick="tab('tab2')"><a>Tab 2</a></li>
+</ul>
+
+<div id="Content_Area">
+<div id="tab1">
 <p>Add a new employee</p>
 <form method = "POST" action = "manageredit.php">
 <table>
-<tr> 
-	<td><th>Employee name</th></td> <td> <input type = "text", name = "employeeuname"> </td>
-</tr>
-<tr>
-	<td><th>Assigned Username</th></td> <td><input type = "text", name = "empname"></td>
-</tr>
-<tr>
-	<td><th>Assigned Password</th></td> <td><input type = "text", name = "apw"> </td>
-</tr>
-<tr>
-	<td><th>Wage</th></td> <td><input type = "text", name = "uwage"> </td>
-</tr>
-<tr>
-	<td><th>Insurance</th></td><td> <input type = "text", name = "uins"></td>
-</tr>
-<tr>
-	<td><th>Union worker assigned</th></td><td> <input type = "text", name = "uuniname"></td>
-</table>
-<p> <input type = "submit" value = "Add" name = "submitEmployee"> </p>
+<tr><td><th>Employee name</th></td> <td> <input type = "text", name = "employeeuname"> </td></tr>
+<tr><td><th>Assigned Username</th></td> <td><input type = "text", name = "empname"></td></tr>
+<tr><td><th>Assigned Password</th></td> <td><input type = "text", name = "apw"> </td></tr>
+<tr><td><th>Wage</th></td> <td><input type = "text", name = "uwage"> </td></tr>
+<tr><td><th>Insurance</th></td><td> <input type = "text", name = "uins"></td></tr>
+<tr><td><th>Union worker assigned</th></td><td> <input type = "text", name = "uuniname"></td></table>
+<p><input type = "submit" value = "Add" name = "submitEmployee"> </p>
 </form>
 </p>
+</div>
 
+<div id="tab2" style="display: none;">
 <p>Add a new intern</p>
 <form method = "POST" action = "manageredit.php">
 <table>
-<tr> 
-	<td><th>Intern name</th></td> <td> <input type = "text", name = "iuname"> </td>
-</tr>
-<tr>
-	<td><th>Assigned Username</th></td> <td><input type = "text", name = "iname"></td>
-</tr>
-<tr>
-	<td><th>Assigned Password</th></td> <td><input type = "text", name = "ipw"> </td>
-</tr>
-<tr>
-	<td><th>Institution</th></td> <td><input type = "text", name = "insti"> </td>
-</tr>
-<tr>
-	<td><th>Student ID</th></td><td> <input type = "text", name = "SID"></td>
-</tr>
-<tr>
-	<td><th>Trainer assigned</th></td><td> <input type = "text", name = "tuname"></td>
-</tr>
-<tr>
-	<td><th>Duration</th></td><td> <input type = "text", name = "duration"></td>
-</tr>
-<tr>
-	<td><th>Start Date</th></td><td> <input type = "text", name = "sDate"></td>
-</tr>
-</table>
-<p> <input type = "submit" value = "Add" name = "submitIntern"> </p>
+<tr><td><th>Intern name</th></td> <td> <input type = "text", name = "iuname"> </td></tr>
+<tr><td><th>Assigned Username</th></td> <td><input type = "text", name = "iname"></td></tr>
+<tr><td><th>Assigned Password</th></td> <td><input type = "text", name = "ipw"> </td></tr>
+<tr><td><th>Institution</th></td> <td><input type = "text", name = "insti"> </td></tr>
+<tr><td><th>Student ID</th></td><td> <input type = "text", name = "SID"></td></tr>
+<tr><td><th>Trainer assigned</th></td><td> <input type = "text", name = "tuname"></td></tr>
+<tr><td><th>Duration</th></td><td> <input type = "text", name = "duration"></td></tr>
+<tr><td><th>Start Date</th></td><td> <input type = "text", name = "sDate"></td></tr>
+</table><p> <input type = "submit" value = "Add" name = "submitIntern"> </p>
 </form>
 </p>
-
+</div>
+</div>
+</div>
 
 
 <?php
