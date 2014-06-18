@@ -79,6 +79,8 @@ document.getElementById('li_'+tab).setAttribute("class", "active");
 
 <div id="Content_Area">
 <div id="tab1">
+<br/>
+<br/>
 <form method = "POST" action = "manageredit.php">
 <table>
 <tr><td><th>Employee name</th></td> <td> <input type = "text", name = "employeeuname"> </td></tr>
@@ -95,6 +97,8 @@ document.getElementById('li_'+tab).setAttribute("class", "active");
 <div id="tab2" style="display: none;">
 <form method = "POST" action = "manageredit.php">
 <table>
+<br/>
+<br/>
 <tr><td><th>Intern name</th></td> <td> <input type = "text", name = "iuname"> </td></tr>
 <tr><td><th>Assigned Username</th></td> <td><input type = "text", name = "iname"></td></tr>
 <tr><td><th>Assigned Password</th></td> <td><input type = "text", name = "ipw"> </td></tr>
