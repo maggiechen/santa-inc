@@ -142,8 +142,8 @@ document.getElementById('li_'+tab).setAttribute("class", "active");
 <br/>
 <br/>
 <table>
-<tr><td><th>Intern's username</th></td><td> <input type = "text", name = "iuname"></td></tr>
-<tr><td><th>Trainer assigned</th></td><td> <input type = "text", name = "tuname"></td></tr>
+<tr><td><th>Intern's username</th></td><td> <input type = "text", name = "modIname"></td></tr>
+<tr><td><th>Trainer assigned</th></td><td> <input type = "text", name = "modItrainer"></td></tr>
 
 </table><p> <input type = "submit" value = "Update" name = "submitIUpdate"> </p>
 </form>
@@ -167,7 +167,6 @@ document.getElementById('li_'+tab).setAttribute("class", "active");
 <tr><td><th> Supply Name </th></td> <td> <input type = "text", name = "delSSname"> </td></tr>
 <tr><td><th> Supply Model </th></td> <td> <input type = "text", name = "delSSmodel"> </td></tr>
 <tr><td><th> Supply Serial </th></td> <td> <input type = "text", name = "delSSerial"> </td></tr>
-<tr><td><th> Employee Username </th></td> <td> <input type = "text", name = "delEmployee"> </td></tr>
 <tr><td><th> Reindeer Stall </th></td> <td> <input type = "text", name = "delReindeer"> </td></tr>
 </table>
 <p><input type = "submit" value = "Delete" name = "DeleteStuff"> </p>
@@ -187,7 +186,7 @@ $db_conn = OCILogon("ora_f8l8", "a40626103", "ug");
 //========================================================================================================================
 //receive username from previous form
 $M_Uname=$_SESSION["admin_name"];  
-//Getting the input data from the forms for Employee
+//Getting the input data from the forms for Adding Employee
 $E_Name = $_POST['employeeuname'];
 $E_UName = $_POST['empname'];
 $E_APw = $_POST['apw'];
@@ -195,7 +194,7 @@ $E_Wage = $_POST['uwage'];
 $E_Ins = $_POST['uins'];
 $E_UWorker = $_POST['uuniname'];
 
-//Getting the input data from the forms for Interns
+//Getting the input data from the forms for Adding Interns
 $I_name = $_POST['iuname'];
 $I_UName = $_POST['iuname'];
 $I_APw = $_POST['ipw'];
@@ -204,6 +203,30 @@ $I_SID = $_POST['SID'];
 $I_Trainer = $_POST['tuname'];
 $I_Dur = $_POST['duration'];
 $I_SDate = $_POST['sDate'];
+
+//Getting the data for updating Employees
+$E_UPname = $_POST['modEname'];
+$E_UWage = $_POST['modEwage'];
+$E_UIns = $_POST['modEIns'];
+$E_UUniname = $_POST['modEUniname'];
+
+//Getting data for updating Interns
+$I_UPName = $_POST['modIname'];
+$I_UTrainer = $_POST['modItrainer'];
+
+//Getting data for deletions
+$D_Emp = $_POST['delEmployee'];
+$D_Int = $_POST['delIntern'];
+$D_SModel = $_POST['delSModel'];
+$D_SSerial = $_POST ['delSSerial'];
+$D_Child = $_POST['delChild'];
+$D_TModel = $_POST['delTModel'];
+$D_TSno = $_POST['delTSno'];
+$D_SSserial = $_POST['delSSerial'];
+$D_SSmodel = $_POST['delSSmodel'];
+$D_SSname = $_POST['delSSname'];
+$D_Rein = $_POST['delReindeer'];
+
 //=========================================================================================================================
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
