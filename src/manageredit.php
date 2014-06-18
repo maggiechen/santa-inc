@@ -1,12 +1,13 @@
 <style type = "text/css">
-		table {
-    		border-collapse: collapse;
-		}
+table {
+	border-collapse: collapse;
+}
 
-		table, td, th {
-		    border: 1px solid black;
-		}
-	#tabs ul {
+table, td, th {
+	border: 1px solid black;
+}
+
+#tabs ul {
 padding: 0px;
 margin: 0px;
 margin-left: 10px;

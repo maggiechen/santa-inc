@@ -8,6 +8,11 @@
 		}
 		</style>
 
+
+<form method = "POST" action = "manageredit.php">
+	<input type = "submit" value = "Add interns/employees" name = "add">
+</form>
+
 <form method = "POST" action = "manager.php">
 <p>
 Select the employee based on # of interns:
@@ -19,6 +24,7 @@ Select the employee based on # of interns:
 </p>
 <p><input type = "submit" value = "Enter" name = "choice"></p>
 </form>
+
 
 <?php
 ini_set('session.save_path','sessions'); //save session to sessions folder
@@ -92,23 +98,14 @@ function executeBoundSQL($cmdstr, $list) {
 	}
 
 }
-//==========================================vvvv MODIFY THIS vvv==================================================================
-//TODO
-//Modify this so it prints out stuff depending on what you asked for it
-function printResult($result) { //prints results from a select statement
-	echo "<br>Got data from table tab1:<br>";
-	echo "<table>";
-	echo "<tr><th>ID</th><th>Name</th></tr>";
 
-	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr><td>" . $row["NID"] . "</td><td>" . $row["NAME"] . "</td></tr>"; //or just use "echo $row[0]" 
-	}
-	echo "</table>";
-
-}
 //=======================================================================================================================================
 // Connect Oracle...
 if ($db_conn) {
+	if (array_key_exists('add', $_POST)) {
+		header("location: manager.php");
+		exit();
+	}
 
 	if (array_key_exists('choice', $_POST)){
 		$makeview = executePlainSQL("CREATE OR REPLACE VIEW numInterns(name, uname, wages, insurance, interncount) AS
