@@ -43,9 +43,10 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 
 	$r = OCIExecute($statement, OCI_DEFAULT);
 	if (!$r) {
-		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+		echo "<script type='text/javascript'>alert('Change denied: internships cannot last longer than 12 months');</script>";
+		//echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
 		$e = oci_error($statement); // For OCIExecute errors pass the statementhandle
-		echo htmlentities($e['message']);
+		//echo htmlentities($e['message']);
 		$success = False;
 	} else {
 
