@@ -19,6 +19,16 @@
 	</form>
 </p>
 
+<form method = "POST" action = "fulltimeedit.php">
+	<p>
+		Delete an intern:
+	</p>
+	<p>
+	<input type = "text" name = "deleteiuname">
+	<input type = "submit" value = "Delete intern" name = "delin">
+	</p>
+</form>
+
 <?php
 ini_set('session.save_path','sessions'); //save session to sessions folder
 session_start();
@@ -57,6 +67,12 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 
 // Connect Oracle...
 if ($db_conn) {
+
+	if (array_key_exists('delin', $_POST)) {
+		$internToDelete = $_POST['deleteiuname'];
+		executePlainSQL("delete from InternElf_train where iuname = '".$internToDelete."'");
+		OCICommit($db_conn);
+	}
 
 	if (array_key_exists('updateintern', $_POST)){
 		$newdur = $_POST['dur'];
