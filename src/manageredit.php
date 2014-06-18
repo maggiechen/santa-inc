@@ -150,7 +150,30 @@ if ($db_conn) {
 		executePlainSQL("update InternElf_train set funame = '".$I_UTrainer."'where uname = '".$I_UPName."'");
 		oci_commit($db_conn);
 	}
-
+	if (array_key_exists ('delEmp' , $_POST)) {
+		executePlainSQL("delete from FulltimeElf_mng_mon where uname = ".$D_Emp.);
+		OCICommit($db_conn);
+		}
+	if (array_key_exists ('delInt' , $_POST)) {
+		executePlainSQL("delete from InternElf_train where uname = ".$D_Int.);
+		OCICommit($db_conn);
+		}
+	if (array_key_exists ('delSleigh' , $_POST)) {
+		executePlainSQL("delete from Sleigh where sModel = " .$D_SModel. " ^ sSerial = " .$D_SSerial.);
+		OCICommit($db_conn);
+		}
+	if (array_key_exists ('delC' , $_POST)) {
+		executePlainSQL("delete from Child where CID = ".$D_Child.);
+		OCICommit($db_conn);
+		}
+	if (array_key_exists ('delToy' , $_POST)) {
+		executePlainSQL("delete from Toy_isFor where iModel = ".$D_TModel. " ^ iSerial = " .$D_TSno.);
+		OCICommit($db_conn);
+		}	
+	if (array_key_exists ('delR' , $_POST)) {
+		executePlainSQL("delete from Reindeer_drives where stall = ".$D_Rein.);
+		OCICommit($db_conn);
+		}
 	//Commit to save changes...
 	OCILogoff($db_conn);
 
