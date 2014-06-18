@@ -1,3 +1,189 @@
+<?php
+
+ob_start();
+
+ini_set('session.save_path','sessions'); //save session to sessions folder
+session_start();
+
+$success = True; //keep track of errors so it redirects the page only if there are no errors
+$db_conn = OCILogon("ora_f8l8", "a40626103", "ug");  
+//========================================================================================================================
+//receive username from previous form
+$M_Uname=$_SESSION["admin_name"];  
+$M_Pw = $_SESSION["admin_pwd"];
+
+//Getting the input data from the forms for Adding Employee
+$E_Name = $_POST['employeeuname'];
+$E_UName = $_POST['empname'];
+$E_APw = $_POST['apw'];
+$E_Wage = $_POST['uwage'];
+$E_Ins = $_POST['uins'];
+$E_UWorker = $_POST['uuniname'];
+
+//Getting the input data from the forms for Adding Interns
+$I_name = $_POST['iuname'];
+$I_UName = $_POST['iuname'];
+$I_APw = $_POST['ipw'];
+$I_Inst = $_POST['insti'];
+$I_SID = $_POST['SID'];
+$I_Trainer = $_POST['tuname'];
+$I_Dur = $_POST['duration'];
+$I_SDate = $_POST['sDate'];
+
+//Getting the data for updating Employees
+$E_UPname = $_POST['modEname'];
+$E_UWage = $_POST['modEwage'];
+$E_UIns = $_POST['modEIns'];
+$E_UUniname = $_POST['modEUniname'];
+
+//Getting data for updating Interns
+$I_UPName = $_POST['modIname'];
+$I_UTrainer = $_POST['modItrainer'];
+
+//Getting data for deletions
+$D_Emp = $_POST['delEmployee'];
+$D_Int = $_POST['delIntern'];
+$D_SModel = $_POST['delSModel'];
+$D_SSerial = $_POST ['delSSerial'];
+$D_Child = $_POST['delChild'];
+$D_TModel = $_POST['delTModel'];
+$D_TSno = $_POST['delTSno'];
+$D_SSserial = $_POST['delSSerial'];
+$D_SSmodel = $_POST['delSSmodel'];
+$D_SSname = $_POST['delSSname'];
+$D_Rein = $_POST['delReindeer'];
+
+//=========================================================================================================================
+
+function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
+	//echo "<br>running ".$cmdstr."<br>";
+	global $db_conn, $success;
+	$statement = OCIParse($db_conn, $cmdstr); 
+	if (!$statement) {
+		echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
+		$e = OCI_Error($db_conn); // For OCIParse errors pass the       
+		// connection handle
+		echo htmlentities($e['message']);
+		$success = False;
+	}
+
+	$r = OCIExecute($statement, OCI_DEFAULT);
+	if (!$r) {
+		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+		$e = oci_error($statement); // For OCIExecute errors pass the statementhandle
+		echo htmlentities($e['message']);
+		$success = False;
+	} else {
+
+	}
+	return $statement;
+
+}
+//=========================================================================================================================
+function executeBoundSQL($cmdstr, $list) {
+	/* Sometimes a same statement will be excuted for severl times, only
+	 the value of variables need to be changed.
+	 In this case you don't need to create the statement several times; 
+	 using bind variables can make the statement be shared and just 
+	 parsed once. This is also very useful in protecting against SQL injection. See example code below for       how this functions is used */
+
+	global $db_conn, $success;
+	$statement = OCIParse($db_conn, $cmdstr);
+
+	if (!$statement) {
+		echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
+		$e = OCI_Error($db_conn);
+		echo htmlentities($e['message']);
+		$success = False;
+	}
+
+	foreach ($list as $tuple) {
+		foreach ($tuple as $bind => $val) {
+			//echo $val;
+			//echo "<br>".$bind."<br>";
+			OCIBindByName($statement, $bind, $val);
+			unset ($val); //make sure you do not remove this. Otherwise $val will remain in an array object wrapper which will not be recognized by Oracle as a proper datatype
+
+		}
+
+		$r = OCIExecute($statement, OCI_DEFAULT);
+		if (!$r) {
+			echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+			$e = OCI_Error($statement); // For OCIExecute errors pass the statementhandle
+			echo htmlentities($e['message']);
+			echo "<br>";
+			$success = False;
+		}
+	}
+
+}
+
+//=======================================================================================================================================
+// Connect Oracle...
+if ($db_conn) {
+	$qqq = executePlainSQL("select uname, pw from ManagerElf where uname = '" .$M_Uname. "' and pw = '" .$M_Pw. "'");
+
+	if (!OCI_Fetch($qqq)) {
+		header("location: login.php");
+		exit();
+	}
+
+	if (array_key_exists('submitEmployee', $_POST)) {			//Add employees to the table
+		$DumpValuesInEmployee = executeBoundSQL("insert into FulltimeElf_mng_mon values (" .$M_UName. "," .$E_UName. "," .$E_APw. "," .$E_Wage. "," .$E_Ins. "," .$E_UWorker. "," .$E_Name. ")");  		
+		echo"<br> Added new employee </br>";
+	}
+	
+	if (array_key_exists ('submitIntern', $_POST)) {
+		$DumpValuesInIntern = executeBoundSQL("insert into InternElf_train values (" .$I_UName. "," .$I_APw. "," .$I_Inst. "," .$I_SID. "," .$I_Trainer. "," .$I_name. "," .$I_Dur. "," .$I_SDate. ")"); 
+	
+	}
+
+
+	//Commit to save changes...
+	OCILogoff($db_conn);
+
+} else {
+	echo "cannot connect";
+	$e = OCI_Error(); // For OCILogon errors pass no handle
+	echo htmlentities($e['message']);
+}
+
+/* OCILogon() allows you to log onto the Oracle database
+     The three arguments are the username, password, and database
+     You will need to replace "username" and "password" for this to
+     to work. 
+     all strings that start with "$" are variables; they are created
+     implicitly by appearing on the left hand side of an assignment 
+     statement */
+
+/* OCIParse() Prepares Oracle statement for execution
+      The two arguments are the connection and SQL query. */
+/* OCIExecute() executes a previously parsed statement
+      The two arguments are the statement which is a valid OCI
+      statement identifier, and the mode. 
+      default mode is OCI_COMMIT_ON_SUCCESS. Statement is
+      automatically committed after OCIExecute() call when using this
+      mode.
+      Here we use OCI_DEFAULT. Statement is not committed
+      automatically when using this mode */
+
+/* OCI_Fetch_Array() Returns the next row from the result data as an  
+     associative or numeric array, or both.
+     The two arguments are a valid OCI statement identifier, and an 
+     optinal second parameter which can be any combination of the 
+     following constants:
+
+     OCI_BOTH - return an array with both associative and numeric 
+     indices (the same as OCI_ASSOC + OCI_NUM). This is the default 
+     behavior.  
+     OCI_ASSOC - return an associative array (as OCI_Fetch_Assoc() 
+     works).  
+     OCI_NUM - return a numeric array, (as OCI_Fetch_Row() works).  
+     OCI_RETURN_NULLS - create empty elements for the NULL fields.  
+     OCI_RETURN_LOBS - return the value of a LOB of the descriptor.  
+     Default mode is OCI_BOTH.  */
+?>
+
 <style type = "text/css">
 table {
 	border-collapse: collapse;
@@ -178,187 +364,3 @@ document.getElementById('li_'+tab).setAttribute("class", "active");
 </div>
 
 
-<?php
-ini_set('session.save_path','sessions'); //save session to sessions folder
-session_start();
-
-$success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_f8l8", "a40626103", "ug");  
-//========================================================================================================================
-//receive username from previous form
-$M_Uname=$_SESSION["admin_name"];  
-$M_Pw = $_SESSION["admin_pwd"];
-
-//Getting the input data from the forms for Adding Employee
-$E_Name = $_POST['employeeuname'];
-$E_UName = $_POST['empname'];
-$E_APw = $_POST['apw'];
-$E_Wage = $_POST['uwage'];
-$E_Ins = $_POST['uins'];
-$E_UWorker = $_POST['uuniname'];
-
-//Getting the input data from the forms for Adding Interns
-$I_name = $_POST['iuname'];
-$I_UName = $_POST['iuname'];
-$I_APw = $_POST['ipw'];
-$I_Inst = $_POST['insti'];
-$I_SID = $_POST['SID'];
-$I_Trainer = $_POST['tuname'];
-$I_Dur = $_POST['duration'];
-$I_SDate = $_POST['sDate'];
-
-//Getting the data for updating Employees
-$E_UPname = $_POST['modEname'];
-$E_UWage = $_POST['modEwage'];
-$E_UIns = $_POST['modEIns'];
-$E_UUniname = $_POST['modEUniname'];
-
-//Getting data for updating Interns
-$I_UPName = $_POST['modIname'];
-$I_UTrainer = $_POST['modItrainer'];
-
-//Getting data for deletions
-$D_Emp = $_POST['delEmployee'];
-$D_Int = $_POST['delIntern'];
-$D_SModel = $_POST['delSModel'];
-$D_SSerial = $_POST ['delSSerial'];
-$D_Child = $_POST['delChild'];
-$D_TModel = $_POST['delTModel'];
-$D_TSno = $_POST['delTSno'];
-$D_SSserial = $_POST['delSSerial'];
-$D_SSmodel = $_POST['delSSmodel'];
-$D_SSname = $_POST['delSSname'];
-$D_Rein = $_POST['delReindeer'];
-
-//=========================================================================================================================
-
-function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
-	//echo "<br>running ".$cmdstr."<br>";
-	global $db_conn, $success;
-	$statement = OCIParse($db_conn, $cmdstr); 
-	if (!$statement) {
-		echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
-		$e = OCI_Error($db_conn); // For OCIParse errors pass the       
-		// connection handle
-		echo htmlentities($e['message']);
-		$success = False;
-	}
-
-	$r = OCIExecute($statement, OCI_DEFAULT);
-	if (!$r) {
-		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
-		$e = oci_error($statement); // For OCIExecute errors pass the statementhandle
-		echo htmlentities($e['message']);
-		$success = False;
-	} else {
-
-	}
-	return $statement;
-
-}
-//=========================================================================================================================
-function executeBoundSQL($cmdstr, $list) {
-	/* Sometimes a same statement will be excuted for severl times, only
-	 the value of variables need to be changed.
-	 In this case you don't need to create the statement several times; 
-	 using bind variables can make the statement be shared and just 
-	 parsed once. This is also very useful in protecting against SQL injection. See example code below for       how this functions is used */
-
-	global $db_conn, $success;
-	$statement = OCIParse($db_conn, $cmdstr);
-
-	if (!$statement) {
-		echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
-		$e = OCI_Error($db_conn);
-		echo htmlentities($e['message']);
-		$success = False;
-	}
-
-	foreach ($list as $tuple) {
-		foreach ($tuple as $bind => $val) {
-			//echo $val;
-			//echo "<br>".$bind."<br>";
-			OCIBindByName($statement, $bind, $val);
-			unset ($val); //make sure you do not remove this. Otherwise $val will remain in an array object wrapper which will not be recognized by Oracle as a proper datatype
-
-		}
-
-		$r = OCIExecute($statement, OCI_DEFAULT);
-		if (!$r) {
-			echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
-			$e = OCI_Error($statement); // For OCIExecute errors pass the statementhandle
-			echo htmlentities($e['message']);
-			echo "<br>";
-			$success = False;
-		}
-	}
-
-}
-
-//=======================================================================================================================================
-// Connect Oracle...
-if ($db_conn) {
-	echo "select uname, pw from ManagerElf where uname = '" .$M_Uname. "' and pw = 
-				'" .$M_Pw. "'";
-	$doquery = executePlainSQL("select uname, pw from ManagerElf where uname = '" .$M_Uname. "' and pw = 
-				'" .$M_Pw. "'");
-	if (OCI_Fetch($doquery)){
-		header("location: login.php");
-		exit();
-	}
-
-	if (array_key_exists('submitEmployee', $_POST)) {			//Add employees to the table
-		$DumpValuesInEmployee = executeBoundSQL("insert into FulltimeElf_mng_mon values (" .$M_UName. "," .$E_UName. "," .$E_APw. "," .$E_Wage. "," .$E_Ins. "," .$E_UWorker. "," .$E_Name. ")");  		
-		echo"<br> Added new employee </br>";
-	}
-	
-	if (array_key_exists ('submitIntern', $_POST)) {
-		$DumpValuesInIntern = executeBoundSQL("insert into InternElf_train values (" .$I_UName. "," .$I_APw. "," .$I_Inst. "," .$I_SID. "," .$I_Trainer. "," .$I_name. "," .$I_Dur. "," .$I_SDate. ")"); 
-	
-	}
-
-
-	//Commit to save changes...
-	OCILogoff($db_conn);
-
-} else {
-	echo "cannot connect";
-	$e = OCI_Error(); // For OCILogon errors pass no handle
-	echo htmlentities($e['message']);
-}
-
-/* OCILogon() allows you to log onto the Oracle database
-     The three arguments are the username, password, and database
-     You will need to replace "username" and "password" for this to
-     to work. 
-     all strings that start with "$" are variables; they are created
-     implicitly by appearing on the left hand side of an assignment 
-     statement */
-
-/* OCIParse() Prepares Oracle statement for execution
-      The two arguments are the connection and SQL query. */
-/* OCIExecute() executes a previously parsed statement
-      The two arguments are the statement which is a valid OCI
-      statement identifier, and the mode. 
-      default mode is OCI_COMMIT_ON_SUCCESS. Statement is
-      automatically committed after OCIExecute() call when using this
-      mode.
-      Here we use OCI_DEFAULT. Statement is not committed
-      automatically when using this mode */
-
-/* OCI_Fetch_Array() Returns the next row from the result data as an  
-     associative or numeric array, or both.
-     The two arguments are a valid OCI statement identifier, and an 
-     optinal second parameter which can be any combination of the 
-     following constants:
-
-     OCI_BOTH - return an array with both associative and numeric 
-     indices (the same as OCI_ASSOC + OCI_NUM). This is the default 
-     behavior.  
-     OCI_ASSOC - return an associative array (as OCI_Fetch_Assoc() 
-     works).  
-     OCI_NUM - return a numeric array, (as OCI_Fetch_Row() works).  
-     OCI_RETURN_NULLS - create empty elements for the NULL fields.  
-     OCI_RETURN_LOBS - return the value of a LOB of the descriptor.  
-     Default mode is OCI_BOTH.  */
-?>
