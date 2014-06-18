@@ -261,7 +261,7 @@ create table takeCareOf(
 Iuname char(40),
 stall integer,
 PRIMARY KEY (Iuname, stall),
-foreign key (Iuname) references InternElf_train(uname),
+foreign key (Iuname) references InternElf_train(uname) ON DELETE CASCADE, -- does this need to be conditional...?
 foreign key (stall) references Reindeer_drives(stall));
 
 insert into takeCareOf values ('easterjack2', 30);

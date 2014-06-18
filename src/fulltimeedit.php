@@ -14,8 +14,8 @@
 		<p>
 			Username: <input type = "text" name = "iuname">
 			New duration: <input type = "text" name = "dur"> 
+			<input type = "submit" value = "Change" name = "updateintern">
 		</p>
-		<p><input type = "submit" value = "Change" name = "updateintern"></p>
 	</form>
 </p>
 
@@ -78,7 +78,7 @@ if ($db_conn) {
 			$internuser = $row["UNAME"];
 			echo "<tr><td>".$row["NAME"]."</td><td>".$internuser."</td><td>".$row["INSTITUTION"]."</td><td>".$row["SID"]."</td><td>".$row["STARTDATE"]."</td><td>".$row["DURATION"]." months</td>";
 			
-			$stallsquery = executePlainSQL("select * from takeCareOf where iuname ='".$internuser."' ");
+			$stallsquery = executePlainSQL("select * from takeCareOf where iuname ='".$internuser."'");
 			echo "<td>";
 			while ($row2 = OCI_Fetch_Array($stallsquery, OCI_BOTH)) {
 				echo "<p>".$row2["STALL"]." </p>";
@@ -89,6 +89,13 @@ if ($db_conn) {
 		}
 		echo "</table>"; 
 
+		echo "<div>";
+		echo "<p><b>Stalls that all of your interns cover:</b></p>";
+		$allstalls = executePlainSQL("select t.stall from takeCareOf t, InternElf_train i where t.iuname = i.uname and i.funame = '".$u_name."'");
+		while ($row = OCI_Fetch_Array($allstalls,OCI_BOTH)) {
+			echo "<p>".$row[0]."</p>";
+		}
+		echo "</div>";
 
 		$notoys = executePlainSQL("SELECT c.cname, c.rating, c.age, c.cid, c.lat, c.lon FROM Child c LEFT OUTER JOIN Toy_isFor t ON t.CID=c.CID WHERE t.status IS NULL");
 
