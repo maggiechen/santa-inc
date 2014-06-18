@@ -65,8 +65,10 @@ p { padding-left: 15px; }
 function tab(tab) {
 document.getElementById('tab1').style.display = 'none';
 document.getElementById('tab2').style.display = 'none';
+document.getElementById('tab3').style.display = 'none';
 document.getElementById('li_tab1').setAttribute("class", "");
 document.getElementById('li_tab2').setAttribute("class", "");
+document.getElementById('li_tab3').setAttribute("class", "");
 document.getElementById(tab).style.display = 'block';
 document.getElementById('li_'+tab).setAttribute("class", "active");
 }
@@ -76,6 +78,8 @@ document.getElementById('li_'+tab).setAttribute("class", "active");
 <ul>
 <li id="li_tab1" onclick="tab('tab1')"><a>Add an Employee</a></li>
 <li id="li_tab2" onclick="tab('tab2')"><a>Add an Intern</a></li>
+<li id="li_tab3" onclick="tab('tab3')"><a>Update Employee</a></li>
+
 </ul>
 
 <div id="Content_Area">
@@ -109,6 +113,22 @@ document.getElementById('li_'+tab).setAttribute("class", "active");
 <tr><td><th>Duration</th></td><td> <input type = "text", name = "duration"></td></tr>
 <tr><td><th>Start Date</th></td><td> <input type = "text", name = "sDate"></td></tr>
 </table><p> <input type = "submit" value = "Add" name = "submitIntern"> </p>
+</form>
+</p>
+</div>
+
+<div id="tab3" style = "display: none;">
+<br/>
+<br/>
+<form method = "POST" action = "manageredit.php">
+<table>
+<tr><td><th>Employee name</th></td> <td> <input type = "text", name = "modEname"> </td></tr>
+<tr><td><th>Assigned Username</th></td> <td><input type = "text", name = "modEUname"></td></tr>
+<tr><td><th>Assigned Password</th></td> <td><input type = "text", name = "modApw"> </td></tr>
+<tr><td><th>Wage</th></td> <td><input type = "text", name = "modEwage"> </td></tr>
+<tr><td><th>Insurance</th></td><td> <input type = "text", name = "modEIns"></td></tr>
+<tr><td><th>Union worker username</th></td><td> <input type = "text", name = "modEUniname"></td></table>
+<p><input type = "submit" value = "Add" name = "submitEUpdate"> </p>
 </form>
 </p>
 </div>
