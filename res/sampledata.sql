@@ -11,7 +11,7 @@ If you run into an error running this on the servers and get stuck, go through t
 And if you do see a glaring error with the table, please check and (if needed) correct the diagram and report as well.
      
 */
-
+drop table Username cascade constraints;
 drop table Item cascade constraints;
 drop table Toy_isFor cascade constraints;
 drop table Sleigh cascade constraints;
@@ -23,6 +23,42 @@ drop table UnionWorker cascade constraints;
 drop table InternElf_train cascade constraints;
 drop table takeCareOf cascade constraints;
 drop table Reindeer_drives cascade constraints;
+
+create table Username(
+	uname char(40),
+	primary key (uname)
+);
+
+
+insert into Username values ('sailor.south');
+insert into Username values ('smithereeny');
+insert into Username values ('compassmaster' );
+insert into Username values ('yeastybeasty');
+insert into Username values ('idestroydbs');
+insert into Username values ('theotherone');
+insert into Username values ('DanceALot');
+insert into Username values ('Coffee5Ever');
+insert into Username values ('toomuchmusic');
+insert into Username values ('turingMachine');
+insert into Username values ('corgi358');
+insert into Username values ('tinkerwinker');
+insert into Username values('blardigus');
+insert into Username values('spider.nocturne');
+insert into Username values('shoesprayer');
+insert into Username values('witchhazel999');
+insert into Username values('lucaluca');
+insert into Username values('notarthur');
+insert into Username values ('brandonblimp');
+insert into Username values ('yapyap');
+insert into Username values ('carrotdestroyer');
+insert into Username values ('serialpig');
+insert into Username values('honkytonk3');
+insert into Username values('quinzelqueen');
+insert into Username values('obvileaguer');
+insert into Username values('notleaguer');
+insert into Username values('assassin.of.the.night');
+insert into Username values('easterjack2');
+
 
 create table Item(
 name char(40),
@@ -126,7 +162,8 @@ create table ManagerElf(
 uname char(40),
 pw char(40),
 name char(40),
-PRIMARY KEY(uname));
+PRIMARY KEY(uname),
+foreign key (uname) references Username);
 
 insert into ManagerElf values ('sailor.south', '123asdfjkl', 'Sally South');
 insert into ManagerElf values ('smithereeny', 'mypw15','Bob Smith');
@@ -138,7 +175,8 @@ insert into ManagerElf values ('theotherone', 'bobbyChairs', 'Bobby Tables');
 create table UnionWorker(
 	Uname char(40),
 	pw char(40),
-	PRIMARY KEY(Uname));
+	PRIMARY KEY(Uname),
+	foreign key (uname) references Username);
 
 insert into UnionWorker values ('DanceALot', 'hi5hi5hi5');
 insert into UnionWorker values ('Coffee5Ever', 'hax0r');
@@ -155,6 +193,7 @@ create table FulltimeElf_mng_mon(
 	Uniname char(40) not null,
 	name char(40), 
 	PRIMARY KEY (uname),
+	foreign key (uname) references Username,
 	foreign key (Uniname) references UnionWorker (uname),
 	foreign key (Muname) references ManagerElf (uname));
 
@@ -183,6 +222,7 @@ create table InternElf_train(
 	duration integer,
 	startDate date,
 	PRIMARY KEY (uname),
+	foreign key (uname) references Username,
 	foreign key (Funame) references FulltimeElf_mng_mon(uname),
 	CONSTRAINT durationMax CHECK (duration < 13));
 

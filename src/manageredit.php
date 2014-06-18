@@ -1,7 +1,5 @@
 <?php
 
-ob_start();
-
 ini_set('session.save_path','sessions'); //save session to sessions folder
 session_start();
 
@@ -129,15 +127,29 @@ if ($db_conn) {
 	}
 
 	if (array_key_exists('submitEmployee', $_POST)) {			//Add employees to the table
+		executePlainSQL("insert into Username values('".$E_UName."')");
+		oci_commit($db_conn);
 		$DumpValuesInEmployee = executeBoundSQL("insert into FulltimeElf_mng_mon values (" .$M_UName. "," .$E_UName. "," .$E_APw. "," .$E_Wage. "," .$E_Ins. "," .$E_UWorker. "," .$E_Name. ")");  		
 		echo"<br> Added new employee </br>";
+		oci_commit($db_conn);
 	}
 	
 	if (array_key_exists ('submitIntern', $_POST)) {
+		executePlainSQL("insert into Username values('".$I_UName."')");
+		oci_commit($db_conn);
 		$DumpValuesInIntern = executeBoundSQL("insert into InternElf_train values (" .$I_UName. "," .$I_APw. "," .$I_Inst. "," .$I_SID. "," .$I_Trainer. "," .$I_name. "," .$I_Dur. "," .$I_SDate. ")"); 
-	
+		oci_commit($db_conn);
 	}
 
+	if (array_key_exists('submitEUpdate', $_POST)) {
+		executePlainSQL("update FulltimeElf_mng_mon set wages = ".$E_UWage.", insurance = ".$E_UIns." where uname = '".$E_UName."'");
+		oci_commit($db_conn);
+	}
+
+	if (array_key_exists('submitIUpdate', $_POST)) {
+		executePlainSQL("update InternElf_train set funame = '".$I_UTrainer."'where uname = '".$I_UPName."'");
+		oci_commit($db_conn);
+	}
 
 	//Commit to save changes...
 	OCILogoff($db_conn);
@@ -318,7 +330,7 @@ document.getElementById('li_'+tab).setAttribute("class", "active");
 <tr><td><th>Employee's username </th></td><td><input type = "text", name = "modEname"> </td></tr>
 <tr><td><th>Wage</th></td> <td><input type = "text", name = "modEwage"> </td></tr>
 <tr><td><th>Insurance</th></td><td> <input type = "text", name = "modEIns"></td></tr>
-<tr><td><th>Union worker username</th></td><td> <input type = "text", name = "modEUniname"></td></table>
+</table>
 <p><input type = "submit" value = "Update" name = "submitEUpdate"> </p>
 </form>
 </p>
@@ -351,9 +363,6 @@ document.getElementById('li_'+tab).setAttribute("class", "active");
 <tr><td><input type = "submit" value = "Child" name = "delC">Child ID</td> <td> <input type = "text", name = "delChild"> </td></tr>
 <tr><td><input type = "submit" value = "Toy" name = "delToy"> Model</td> <td> <input type = "text", name = "delTModel"> </td></tr>
 <tr><td>Serial No</td> <td> <input type = "text", name = "delTSno">  </td></tr>
-<tr><td><input type = "submit" value = "Supply" name = "delSupp"> Name</td> <td> <input type = "text", name = "delSSname"> </td></tr>
-<tr><td>Model</td> <td> <input type = "text", name = "delSSmodel"> </td></tr>
-<tr><td>Serial</td> <td> <input type = "text", name = "delSSerial"> </td></tr>
 <tr><td><input type = "submit" value = "Reindeer" name = "DelR"> Stall number</td> <td> <input type = "text", name = "delReindeer"> </td></tr>
 </table>
 
