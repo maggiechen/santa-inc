@@ -44,6 +44,7 @@ font-weight: bold;
 
 #tabs ul li a:hover {
 text-decoration: underline;
+cursor: hand;
 }
 
 #tabs #Content_Area {
@@ -157,19 +158,19 @@ document.getElementById('li_'+tab).setAttribute("class", "active");
 <br/>
 <br/>
 <table>
-<tr><td><th> Employee Username </th></td> <td> <input type = "text", name = "delEmployee"> </td></tr>
-<tr><td><th> Intern Username </th></td> <td> <input type = "text", name = "delIntern"> </td></tr>
-<tr><td><th> Sleigh Model </th></td> <td> <input type = "text", name = "delSModel"> </td></tr>
-<tr><td><th> Sleigh Serial </th></td> <td> <input type = "text", name = "delSSerial"> </td></tr>
-<tr><td><th> Child ID</th></td> <td> <input type = "text", name = "delChild"> </td></tr>
-<tr><td><th> Toy model </th></td> <td> <input type = "text", name = "delTModel"> </td></tr>
-<tr><td><th> Toy serial number </th></td> <td> <input type = "text", name = "delTSno"> </td></tr>
-<tr><td><th> Supply Name </th></td> <td> <input type = "text", name = "delSSname"> </td></tr>
-<tr><td><th> Supply Model </th></td> <td> <input type = "text", name = "delSSmodel"> </td></tr>
-<tr><td><th> Supply Serial </th></td> <td> <input type = "text", name = "delSSerial"> </td></tr>
-<tr><td><th> Reindeer Stall </th></td> <td> <input type = "text", name = "delReindeer"> </td></tr>
+<tr><td><input type = "submit" value = "Employee" name = "delEmp"> Username </td> <td> <input type = "text", name = "delEmployee"> </td></tr>
+<tr><td> <input type = "submit" value = "Intern" name = "delInt"> Username </td> <td> <input type = "text", name = "delIntern"> </td></tr>
+<tr><td> <input type = "submit" value = "Sleigh" name = "delSleigh"> Model </td> <td> <input type = "text", name = "delSModel"> </td></tr>
+<tr><td>Serial</td> <td> <input type = "text", name = "delSSerial"> </td></tr>
+<tr><td><input type = "submit" value = "Child" name = "delC">Child ID</td> <td> <input type = "text", name = "delChild"> </td></tr>
+<tr><td><input type = "submit" value = "Toy" name = "delToy"> Model</td> <td> <input type = "text", name = "delTModel"> </td></tr>
+<tr><td>Serial No</td> <td> <input type = "text", name = "delTSno">  </td></tr>
+<tr><td><input type = "submit" value = "Supply" name = "delSupp"> Name</td> <td> <input type = "text", name = "delSSname"> </td></tr>
+<tr><td>Model</td> <td> <input type = "text", name = "delSSmodel"> </td></tr>
+<tr><td>Serial</td> <td> <input type = "text", name = "delSSerial"> </td></tr>
+<tr><td><input type = "submit" value = "Reindeer" name = "DelR"> Stall number</td> <td> <input type = "text", name = "delReindeer"> </td></tr>
 </table>
-<p><input type = "submit" value = "Delete" name = "DeleteStuff"> </p>
+
 
 
 </form>
