@@ -1,41 +1,32 @@
+
 Item
--iModel, iSerial->name
+iModel, iSerial->name
 
 Sleigh
--sModel, sSerial -> condition, sName
+sModel, sSerial -> condition, sName
 
 Child
--CID-> cName, lat, lon, rating, age
+CID-> cName, lat, lon, rating, age
 
-Wants:
--(none)
+Wants:(none)
 
 Toy_isFor
--iModel, iSerial -> rating, status, sModel, sSerial, CID
--iModel -> rating
-
-Supplier
--suName -> phone, lat, lon
--phone -> suName, lat, lon
-
-Supplies
--suName, iModel, iSerial -> price, supply
--suName, supply -> price
+iModel, iSerial -> rating, status, sModel, sSerial, CID
+iModel -> rating
 
 ManagerElf
--uname -> pw, name
+uname -> pw, name
 
 UnionWorker
--Uname ->pw
+Uname ->pw
 
 FulltimeElf_mng_mon
--uname -> muname,  pw, wages, insurance, uniname, name
+uname -> muname,  pw, wages, insurance, uniname, name
 
 InternElf_train
--uname->pw, institution, SID, Funame, name, duration, startDate
+uname->pw, institution, SID, Funame, name, duration, startDate
 
 Reindeer_drives
--stall->diet, name, sModel, sSerial
+stall->diet, name, sModel, sSerial
 
-takeCareOf
--(none)
+takeCareOf (none)

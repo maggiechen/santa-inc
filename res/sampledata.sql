@@ -17,8 +17,6 @@ drop table Toy_isFor cascade constraints;
 drop table Sleigh cascade constraints;
 drop table Child cascade constraints;
 drop table Wants cascade constraints;
-drop table Supplier cascade constraints;
-drop table Supplies cascade constraints;
 drop table ManagerElf cascade constraints;
 drop table FulltimeElf_mng_mon cascade constraints;
 drop table UnionWorker cascade constraints;
@@ -118,36 +116,6 @@ insert into Toy_isFor values (852, 432108, 5, 1, 1960, 135,1238758);
 insert into Toy_isFor values (6874, 2857, 6, 3, 2608, 552,9873002);
 insert into Toy_isFor values (21, 423, 3, 0, 2608, 552,938572);
 
-create table Supplier(
-lat real, 
-lon real, 
-phone integer, 
-suName char(40),
-PRIMARY KEY(suName));
-
-insert into Supplier values (49.2500, 123.1000, 6046523156, 'Elves R Us');
-insert into Supplier values (90.0000, 0.0000, 8521234567, 'The PolarBear Kingdom');
-insert into Supplier values (16.7758, 3.0094, 6529753328, 'Tinky''s Toymakers');
-insert into Supplier values (17.8333, 31.0500, 7777775582, 'LaLa Land');
-insert into Supplier values (61.0000, 8.0000, 3334568998, 'Badoinkadoink');	
-
-create table Supplies(
-price decimal(10,2), 
-supply char(40), 
-suName char(40), 
-iModel integer, 
-iSerial integer, 
-PRIMARY KEY(suName, iModel,iSerial),
-foreign key (suName) references Supplier (suName),
-foreign key (iModel,iSerial) references Item(iModel,iSerial));	
-	
-insert into Supplies values (19.99, 'Wood' , 'Elves R Us', 20, 39852);
-insert into Supplies values (95.09, 'Iron' , 'The PolarBear Kingdom', 20, 2953);  
-insert into Supplies values (123.34, 'Steel' , 'LaLa Land', 76, 16593);
-insert into Supplies values (4560.78, 'Silver' , 'Badoinkadoink',  58, 82752);
-insert into Supplies values (78.35, 'Plastic' , 'Badoinkadoink', 1, 1);
-insert into Supplies values (5700.00, 'Gold' , 'Tinky''s Toymakers', 58, 82752);
-	
 create table ManagerElf(
 uname char(40),
 pw char(40),
@@ -288,3 +256,4 @@ begin
 end;
 
 /
+
