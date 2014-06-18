@@ -89,7 +89,7 @@ document.getElementById('li_'+tab).setAttribute("class", "active");
 <tr><td><th>Assigned Password</th></td> <td><input type = "text", name = "apw"> </td></tr>
 <tr><td><th>Wage</th></td> <td><input type = "text", name = "uwage"> </td></tr>
 <tr><td><th>Insurance</th></td><td> <input type = "text", name = "uins"></td></tr>
-<tr><td><th>Union worker assigned</th></td><td> <input type = "text", name = "uuniname"></td></table>
+<tr><td><th>Union worker username</th></td><td> <input type = "text", name = "uuniname"></td></table>
 <p><input type = "submit" value = "Add" name = "submitEmployee"> </p>
 </form>
 </p>
