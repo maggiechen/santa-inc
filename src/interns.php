@@ -23,10 +23,16 @@
 ini_set('session.save_path','sessions'); //save session to sessions folder
 session_start();
 
+$u_name=$_SESSION["admin_name"];  //receive username from previous form
+$u_pw = $_SESSION["admin_pwd"];
+
+
 $success = True; //keep track of errors so it redirects the page only if there are no errors
 $db_conn = OCILogon("ora_f8l8", "a40626103", "ug");  
-$u_name=$_SESSION["admin_name"];  //receive username from previous form
 //echo $u_name;
+
+
+
 //=========================================================================================================================
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
@@ -109,11 +115,12 @@ function printResult($result) { //prints results from a select statement
 // Connect Oracle...
 if ($db_conn) {
 
-	
-		$staq = executePlainSQL("SELECT * FROM takeCareOf");
-		while ($row = OCI_Fetch_Array($staq, OCI_BOTH)){
-			echo $row["IUNAME"];
-		}
+	$doquery = executePlainSQL("select uname, pw from InternElf_train where uname = '" .$u_name. "' and pw = 
+				'" .$u_pw. "'");
+	if (!OCI_Fetch($doquery)){
+		header("location: login.php");
+		exit();
+	}
 
 	
 	//Print the name of the intern's trainer

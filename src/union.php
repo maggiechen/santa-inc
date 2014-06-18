@@ -13,6 +13,8 @@ session_start();
 $success = True; //keep track of errors so it redirects the page only if there are no errors
 $db_conn = OCILogon("ora_f8l8", "a40626103", "ug");  
 $u_name=$_SESSION["admin_name"];  //receive username from previous form
+$u_pw=$_SESSION["admin_pwd"];  //receive username from previous form
+
 //echo $u_name;
 //=========================================================================================================================
 
@@ -95,6 +97,14 @@ function printResult($result) { //prints results from a select statement
 //=======================================================================================================================================
 // Connect Oracle...
 if ($db_conn) {
+
+
+	$doquery = executePlainSQL("select uname, pw from UnionWorker where uname = '" .$u_name. "' and pw = 
+				'" .$u_pw. "'");
+	if (!OCI_Fetch($doquery)){
+		header("location: login.php");
+		exit();
+	}
 
 	echo "<style>
 		table {

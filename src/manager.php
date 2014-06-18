@@ -34,6 +34,7 @@ session_start();
 $success = True; //keep track of errors so it redirects the page only if there are no errors
 $db_conn = OCILogon("ora_f8l8", "a40626103", "ug");  
 $u_name=$_SESSION["admin_name"];  //receive username from previous form
+$u_pwd = $_SESSION["admin_pwd"];
 //echo $u_name;
 //=========================================================================================================================
 
@@ -103,6 +104,15 @@ function executeBoundSQL($cmdstr, $list) {
 //=======================================================================================================================================
 // Connect Oracle...
 if ($db_conn) {
+
+
+	$doquery = executePlainSQL("select uname, pw from ManagerElf where uname = '" .$u_name. "' and pw = 
+				'" .$u_pwd. "'");
+	if (!OCI_Fetch($doquery)){
+		header("location: login.php");
+		exit();
+	}
+
 	if (array_key_exists('add', $_POST)) {
 		header("location: manageredit.php");
 		exit();

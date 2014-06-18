@@ -186,6 +186,8 @@ $db_conn = OCILogon("ora_f8l8", "a40626103", "ug");
 //========================================================================================================================
 //receive username from previous form
 $M_Uname=$_SESSION["admin_name"];  
+$M_Pw = $_SESSION["admin_pwd"];
+
 //Getting the input data from the forms for Adding Employee
 $E_Name = $_POST['employeeuname'];
 $E_UName = $_POST['empname'];
@@ -295,6 +297,15 @@ function executeBoundSQL($cmdstr, $list) {
 //=======================================================================================================================================
 // Connect Oracle...
 if ($db_conn) {
+	echo "select uname, pw from ManagerElf where uname = '" .$M_Uname. "' and pw = 
+				'" .$M_Pw. "'";
+	$doquery = executePlainSQL("select uname, pw from ManagerElf where uname = '" .$M_Uname. "' and pw = 
+				'" .$M_Pw. "'");
+	if (OCI_Fetch($doquery)){
+		header("location: login.php");
+		exit();
+	}
+
 	if (array_key_exists('submitEmployee', $_POST)) {			//Add employees to the table
 		$DumpValuesInEmployee = executeBoundSQL("insert into FulltimeElf_mng_mon values (" .$M_UName. "," .$E_UName. "," .$E_APw. "," .$E_Wage. "," .$E_Ins. "," .$E_UWorker. "," .$E_Name. ")");  		
 		echo"<br> Added new employee </br>";
