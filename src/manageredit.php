@@ -49,13 +49,13 @@ text-decoration: underline;
 #tabs #Content_Area {
 padding: 10px;
 clear:both;
-overflow:hidden;
+overflow: overflow;
 line-height:19px;
 position: relative;
 top: 0px;
 z-index: 5;
 height: 500px;
-overflow: hidden;
+overflow: overflow;
 }
 
 p { padding-left: 15px; }
@@ -65,8 +65,14 @@ p { padding-left: 15px; }
 function tab(tab) {
 document.getElementById('tab1').style.display = 'none';
 document.getElementById('tab2').style.display = 'none';
+document.getElementById('tab3').style.display = 'none';
+document.getElementById('tab4').style.display = 'none';
+document.getElementById('tab5').style.display = 'none';
 document.getElementById('li_tab1').setAttribute("class", "");
 document.getElementById('li_tab2').setAttribute("class", "");
+document.getElementById('li_tab3').setAttribute("class", "");
+document.getElementById('li_tab4').setAttribute("class", "");
+document.getElementById('li_tab5').setAttribute("class", "");
 document.getElementById(tab).style.display = 'block';
 document.getElementById('li_'+tab).setAttribute("class", "active");
 }
@@ -76,6 +82,10 @@ document.getElementById('li_'+tab).setAttribute("class", "active");
 <ul>
 <li id="li_tab1" onclick="tab('tab1')"><a>Add an Employee</a></li>
 <li id="li_tab2" onclick="tab('tab2')"><a>Add an Intern</a></li>
+<li id="li_tab3" onclick="tab('tab3')"><a>Update Employee</a></li>
+<li id="li_tab4" onclick="tab('tab4')"><a>Update Intern</a></li>
+<li id="li_tab5" onclick="tab('tab5')"><a>Deletions</a></li>
+
 </ul>
 
 <div id="Content_Area">
@@ -89,7 +99,7 @@ document.getElementById('li_'+tab).setAttribute("class", "active");
 <tr><td><th>Assigned Password</th></td> <td><input type = "text", name = "apw"> </td></tr>
 <tr><td><th>Wage</th></td> <td><input type = "text", name = "uwage"> </td></tr>
 <tr><td><th>Insurance</th></td><td> <input type = "text", name = "uins"></td></tr>
-<tr><td><th>Union worker assigned</th></td><td> <input type = "text", name = "uuniname"></td></table>
+<tr><td><th>Union worker username</th></td><td> <input type = "text", name = "uuniname"></td></table>
 <p><input type = "submit" value = "Add" name = "submitEmployee"> </p>
 </form>
 </p>
@@ -112,6 +122,58 @@ document.getElementById('li_'+tab).setAttribute("class", "active");
 </form>
 </p>
 </div>
+
+<div id="tab3" style = "display: none;">
+<br/>
+<br/>
+<form method = "POST" action = "manageredit.php">
+<table>
+<tr><td><th>Employee's username </th></td><td><input type = "text", name = "modEname"> </td></tr>
+<tr><td><th>Wage</th></td> <td><input type = "text", name = "modEwage"> </td></tr>
+<tr><td><th>Insurance</th></td><td> <input type = "text", name = "modEIns"></td></tr>
+<tr><td><th>Union worker username</th></td><td> <input type = "text", name = "modEUniname"></td></table>
+<p><input type = "submit" value = "Update" name = "submitEUpdate"> </p>
+</form>
+</p>
+</div>
+
+<div id="tab4" style="display: none;">
+<form method = "POST" action = "manageredit.php">
+<br/>
+<br/>
+<table>
+<tr><td><th>Intern's username</th></td><td> <input type = "text", name = "iuname"></td></tr>
+<tr><td><th>Trainer assigned</th></td><td> <input type = "text", name = "tuname"></td></tr>
+
+</table><p> <input type = "submit" value = "Update" name = "submitIUpdate"> </p>
+</form>
+</p>
+</div>
+
+<div id="tab5" style="display: none;">
+<p> All deletions are FINAL. Please be careful while deleting </p>
+<p> Delete by: </p>
+<form method = "POST" action = "manageredit.php">
+<br/>
+<br/>
+<table>
+<tr><td><th> Employee Username </th></td> <td> <input type = "text", name = "delEmployee"> </td></tr>
+<tr><td><th> Intern Username </th></td> <td> <input type = "text", name = "delIntern"> </td></tr>
+<tr><td><th> Sleigh Model </th></td> <td> <input type = "text", name = "delSModel"> </td></tr>
+<tr><td><th> Sleigh Serial </th></td> <td> <input type = "text", name = "delSSerial"> </td></tr>
+<tr><td><th> Child ID</th></td> <td> <input type = "text", name = "delChild"> </td></tr>
+<tr><td><th> Toy model </th></td> <td> <input type = "text", name = "delTModel"> </td></tr>
+<tr><td><th> Toy serial number </th></td> <td> <input type = "text", name = "delTSno"> </td></tr>
+<tr><td><th> Supply Name </th></td> <td> <input type = "text", name = "delSSname"> </td></tr>
+<tr><td><th> Supply Model </th></td> <td> <input type = "text", name = "delSSmodel"> </td></tr>
+<tr><td><th> Supply Serial </th></td> <td> <input type = "text", name = "delSSerial"> </td></tr>
+<tr><td><th> Employee Username </th></td> <td> <input type = "text", name = "delEmployee"> </td></tr>
+<tr><td><th> Reindeer Stall </th></td> <td> <input type = "text", name = "delReindeer"> </td></tr>
+</table>
+<p><input type = "submit" value = "Delete" name = "DeleteStuff"> </p>
+
+
+</form>
 </div>
 </div>
 
