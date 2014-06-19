@@ -144,6 +144,7 @@ if ($db_conn) {
 	if (array_key_exists('submitEUpdate', $_POST)) {
 		echo "update FulltimeElf_mng_mon set wages = '".$E_UWage."', insurance = '".$E_UIns."' where uname = '".$E_UPname."'";
 		executePlainSQL("update FulltimeElf_mng_mon set wages = '".$E_UWage."', insurance = '".$E_UIns."' where uname = '".$E_UName."'");
+>\
 		oci_commit($db_conn);
 	}
 
