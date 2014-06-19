@@ -314,6 +314,11 @@ document.getElementById('li_'+tab).setAttribute("class", "active");
 }
 </script>
 
+<!-- logout button -->
+<form method="POST" action="logout.php">
+<p><input type="submit" value="Log Out" name="Log Out"></p>
+</form>
+
 <div id="tabs">
 <ul>
 <li id="li_tab1" onclick="tab('tab1')"><a>Add an Employee</a></li>
