@@ -259,6 +259,10 @@ table, td, th {
 	border: 1px solid black;
 }
 
+body {
+    background-color: #EEE8AA;
+}
+
 #tabs ul {
 padding: 0px;
 margin: 0px;
@@ -280,14 +284,14 @@ display: block;
 margin-left: 6px;
 line-height: 24px;
 padding-left: 10px;
-background: #f6f6f6;
+background: #FFDF00;
 z-index: 9999;
 border: 1px solid #ccc;
 border-bottom: 0px;
--moz-border-radius-topleft: 4px;
-border-top-left-radius: 4px;
--moz-border-radius-topright: 4px;
-border-top-right-radius: 4px;
+-moz-border-radius-topleft: 10px;
+border-top-left-radius: 10px;
+-moz-border-radius-topright: 10px;
+border-top-right-radius: 10px;
 width: 130px;
 color: #000000;
 text-decoration: none;
@@ -295,7 +299,7 @@ font-weight: bold;
 }
 
 #tabs ul li a:hover {
-text-decoration: underline;
+color: #8B4513;
 cursor: hand;
 }
 
@@ -404,7 +408,7 @@ document.getElementById('li_'+tab).setAttribute("class", "active");
 </div>
 
 <div id="tab5" style="display: none;">
-<p> All deletions are FINAL. Please be careful while deleting </p>
+<p> All deletions are FINAL. Please be careful while deleting! </p>
 <p> Delete by: </p>
 <form method = "POST" action = "manageredit.php">
 <br/>
