@@ -1,3 +1,12 @@
+<!-- back button -->
+<form method="POST" action="manager.php">
+<p><input type="submit" value="Back" name="Back"></p>
+</form>
+<!-- logout button -->
+<form method="POST" action="logout.php">
+<p><input type="submit" value="Log Out" name="Log Out"></p>
+</form>
+
 <?php
 
 ini_set('session.save_path','sessions'); //save session to sessions folder
@@ -43,6 +52,8 @@ $D_Emp = $_POST['delEmployee'];
 $D_Int = $_POST['delIntern'];
 $D_SModel = $_POST['delSModel'];
 $D_SSserial = $_POST['delSSerial'];
+
+
 
 //=========================================================================================================================
 
@@ -123,6 +134,8 @@ if ($db_conn) {
 		header("location: login.php");
 		exit();
 	}
+
+
 
 	if (array_key_exists('submitEmployee', $_POST)) {			//Add employees to the table
 		executePlainSQL("insert into Username values('".$E_UName."')");
@@ -236,6 +249,7 @@ if ($db_conn) {
      Default mode is OCI_BOTH.  */
 ?>
 
+
 <style type = "text/css">
 table {
 	border-collapse: collapse;
@@ -316,11 +330,6 @@ document.getElementById(tab).style.display = 'block';
 document.getElementById('li_'+tab).setAttribute("class", "active");
 }
 </script>
-
-<!-- logout button -->
-<form method="POST" action="logout.php">
-<p><input type="submit" value="Log Out" name="Log Out"></p>
-</form>
 
 <div id="tabs">
 <ul>

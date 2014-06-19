@@ -8,6 +8,14 @@
 		}
 		</style>
 
+<!-- back button -->
+<form method="POST" action="fulltime.php">
+<input type="submit" value="Back" name="Back"></p>
+</form>
+<!-- logout button -->
+<form method="POST" action="logout.php">
+<p><input type="submit" value="Log Out" name="Log Out">
+</form>
 <p>To change the internship duration of your intern, enter a username and new duration. Please note that internships cannot last longer than 12 months.</p>
 <p>
 	<form method = "POST" action = "fulltimeedit.php">
@@ -18,11 +26,6 @@
 		</p>
 	</form>
 </p>
-
-<!-- logout button -->
-<form method="POST" action="logout.php">
-<p><input type="submit" value="Log Out" name="Log Out"></p>
-</form>
 
 <form method = "POST" action = "fulltimeedit.php">
 	<p>
