@@ -142,9 +142,8 @@ if ($db_conn) {
 	}
 
 	if (array_key_exists('submitEUpdate', $_POST)) {
-		echo "update FulltimeElf_mng_mon set wages = '".$E_UWage."', insurance = '".$E_UIns."' where uname = '".$E_UPname."'";
-		executePlainSQL("update FulltimeElf_mng_mon set wages = '".$E_UWage."', insurance = '".$E_UIns."' where uname = '".$E_UName."'");
->\
+		echo "update FulltimeElf_mng_mon set wages = '".$E_UWage."', insurance = '".$E_UIns."' where uname = '".$E_UPName."'";
+		executePlainSQL("update FulltimeElf_mng_mon set wages = '".$E_UWage."', insurance = '".$E_UIns."' where uname = '".$E_UPName."'");
 		oci_commit($db_conn);
 	}
 
@@ -155,27 +154,40 @@ if ($db_conn) {
 	if (array_key_exists ('delEmp' , $_POST)) {
 		executePlainSQL("delete from FulltimeElf_mng_mon where uname = '".$D_Emp."'");
 		OCICommit($db_conn);
-		}
+	}
 	if (array_key_exists ('delInt' , $_POST)) {
 		executePlainSQL("delete from InternElf_train where uname = '".$D_Int."'");
 		OCICommit($db_conn);
-		}
+	}
 	if (array_key_exists ('delSleigh' , $_POST)) {
-		executePlainSQL("delete from Sleigh where sModel = " .$D_SModel. " ^ sSerial = " .$D_SSerial);
+		executePlainSQL("delete from Sleigh where sModel = " .$D_SModel. " and sSerial = " .$D_SSerial);
 		OCICommit($db_conn);
-		}
+	}
 	if (array_key_exists ('delC' , $_POST)) {
 		executePlainSQL("delete from Child where CID = ".$D_Child);
 		OCICommit($db_conn);
-		}
+	}
 	if (array_key_exists ('delToy' , $_POST)) {
-		executePlainSQL("delete from Toy_isFor where iModel = ".$D_TModel. " ^ iSerial = " .$D_TSno);
+		executePlainSQL("delete from Toy_isFor where iModel = ".$D_TModel. " and iSerial = " .$D_TSno);
 		OCICommit($db_conn);
-		}	
+	}	
 	if (array_key_exists ('delR' , $_POST)) {
 		executePlainSQL("delete from Reindeer_drives where stall = ".$D_Rein);
 		OCICommit($db_conn);
-		}
+	}
+
+	$query = executePlainSQL("select * from Sleigh");
+	echo "<table>"; 
+	echo "<tr><th>Sleigh name</th><th>Condition</th><th>Sleigh Model</th><th>Sleigh Serial</th></tr>";
+
+	while ($row = OCI_Fetch_Array($query, OCI_BOTH)){
+		echo "<tr><td>".$row["SNAME"]."</td><td>".$row["CONDITION"]."</td><td>".$row["SMODEL"]."</td><td>".$row["SSERIAL"]."</td></tr>"; 
+	}
+	echo "</table>";
+
+
+
+
 	//Commit to save changes...
 	OCILogoff($db_conn);
 
@@ -301,6 +313,11 @@ document.getElementById(tab).style.display = 'block';
 document.getElementById('li_'+tab).setAttribute("class", "active");
 }
 </script>
+
+<!-- logout button -->
+<form method="POST" action="logout.php">
+<p><input type="submit" value="Log Out" name="Log Out"></p>
+</form>
 
 <div id="tabs">
 <ul>
