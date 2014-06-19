@@ -53,7 +53,7 @@ $D_Rein = $_POST['delReindeer'];
 
 //=========================================================================================================================
 
-function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
+function executePlainSQL($cmdstr, $message) { //takes a plain (no bound variables) SQL command and executes it
 	//echo "<br>running ".$cmdstr."<br>";
 	global $db_conn, $success;
 	$statement = OCIParse($db_conn, $cmdstr); 
@@ -67,9 +67,11 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 
 	$r = OCIExecute($statement, OCI_DEFAULT);
 	if (!$r) {
-		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+		//echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+		echo "<script type='text/javascript'>alert('Change denied: ".$message."');</script>";
+
 		$e = oci_error($statement); // For OCIExecute errors pass the statementhandle
-		echo htmlentities($e['message']);
+		//echo htmlentities($e['message']);
 		$success = False;
 	} else {
 
@@ -78,7 +80,7 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 
 }
 //=========================================================================================================================
-function executeBoundSQL($cmdstr, $list) {
+function executeBoundSQL($cmdstr, $list, $message) {
 	/* Sometimes a same statement will be excuted for severl times, only
 	 the value of variables need to be changed.
 	 In this case you don't need to create the statement several times; 
@@ -99,6 +101,7 @@ function executeBoundSQL($cmdstr, $list) {
 		foreach ($tuple as $bind => $val) {
 			//echo $val;
 			//echo "<br>".$bind."<br>";
+
 			OCIBindByName($statement, $bind, $val);
 			unset ($val); //make sure you do not remove this. Otherwise $val will remain in an array object wrapper which will not be recognized by Oracle as a proper datatype
 
@@ -107,6 +110,8 @@ function executeBoundSQL($cmdstr, $list) {
 		$r = OCIExecute($statement, OCI_DEFAULT);
 		if (!$r) {
 			echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+			echo "<script type='text/javascript'>alert('Change denied: ".$message."');</script>";
+
 			$e = OCI_Error($statement); // For OCIExecute errors pass the statementhandle
 			echo htmlentities($e['message']);
 			echo "<br>";
@@ -137,8 +142,13 @@ if ($db_conn) {
 	if (array_key_exists ('submitIntern', $_POST)) {
 		executePlainSQL("insert into Username values('".$I_UName."')");
 		oci_commit($db_conn);
-		$DumpValuesInIntern = executeBoundSQL("insert into InternElf_train values (" .$I_UName. "," .$I_APw. "," .$I_Inst. "," .$I_SID. "," .$I_Trainer. "," .$I_name. "," .$I_Dur. "," .$I_SDate. ")"); 
+		$DumpValuesInIntern = executeBoundSQL("insert into InternElf_train values (" .$I_UName. "," .$I_APw. "," .$I_Inst. "," .$I_SID. "," .$I_Trainer. "," .$I_name. "," .$I_Dur. "," .$I_SDate. ")", "Interns cannot work more than 12 months."); 
 		oci_commit($db_conn);
+		$check=executePlainSQL("select * from InternElf_train where uname = '".$I_UName."'");
+		if (!OCI_Fetch($check)) {
+			executePlainSQL("delete from Username where uname = '".$I_UName."'");
+			oci_commit($db_conn);
+		}
 	}
 
 	if (array_key_exists('submitEUpdate', $_POST)) {
@@ -152,15 +162,15 @@ if ($db_conn) {
 		oci_commit($db_conn);
 	}
 	if (array_key_exists ('delEmp' , $_POST)) {
-		executePlainSQL("delete from FulltimeElf_mng_mon where uname = '".$D_Emp."'");
+		executePlainSQL("delete from FulltimeElf_mng_mon where uname = '".$D_Emp."'", "You will have to remove all of the interns trained by this employee first.");
 		OCICommit($db_conn);
 	}
 	if (array_key_exists ('delInt' , $_POST)) {
-		executePlainSQL("delete from InternElf_train where uname = '".$D_Int."'");
+		executePlainSQL("delete from InternElf_train where uname = '".$D_Int."'", "You cannot fire an intern until after they begin work");
 		OCICommit($db_conn);
 	}
 	if (array_key_exists ('delSleigh' , $_POST)) {
-		executePlainSQL("delete from Sleigh where sModel = " .$D_SModel. " and sSerial = " .$D_SSerial);
+		executePlainSQL("delete from Sleigh where sModel = " .$D_SModel. " and sSerial = " .$D_SSerial, "This sleigh still has deliveries to make");
 		OCICommit($db_conn);
 	}
 	if (array_key_exists ('delC' , $_POST)) {
