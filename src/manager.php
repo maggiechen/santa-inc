@@ -167,9 +167,9 @@ if ($db_conn) {
 	echo "<p>Interns that your fulltime workers train</p>";
 	$internsquery = executePlainSQL("select distinct * from FulltimeElf_mng_mon f, InternElf_train i where f.uname = i.funame and muname = '".$u_name."'");
 	echo "<table>";
-	echo "<tr><th>Name</th><th>Username</th><th>Institution</th><th>Student number</th><th>Start date(YY-MM-DD)</th><th>Duration</th></tr>";
+	echo "<tr><th>Name</th><th>Username</th><th>Trainer</th><th>Institution</th><th>Student number</th><th>Start date(YY-MM-DD)</th><th>Duration</th></tr>";
 	while ($row = OCI_Fetch_Array($internsquery, OCI_BOTH)) {
-		echo "<tr><td>".$row["NAME"]."</td><td>".$row["UNAME"]."</td><td>".$row["INSTITUTION"]."</td><td>".$row["SID"]."</td><td>".$row["STARTDATE"]."</td><td>".$row["DURATION"]." months</td>";
+		echo "<tr><td>".$row["NAME"]."</td><td>".$row["UNAME"]."</td><td>".$row["FUNAME"]."</td><td>".$row["INSTITUTION"]."</td><td>".$row["SID"]."</td><td>".$row["STARTDATE"]."</td><td>".$row["DURATION"]." months</td>";
 	}
 	echo "</table>";
 	//Commit to save changes...

@@ -237,7 +237,7 @@ insert into InternElf_train values
 insert into InternElf_train values
 ('honkytonk3', 'peterpan23', 'UBC', 4639424, 'spider.nocturne', 'Tinky', 4, '2014-5-20');
 insert into InternElf_train values
-('quinzelqueen', 'mistahjay', 'SUTD', 3756612, 'blardigus', 'Harley', 6, '2014-12-3');
+('quinzelqueen', 'mistahjay', 'SUTD', 3756612, 'blardigus', 'Harley', 6, '2013-12-3');
 insert into InternElf_train values
 ('obvileaguer', '39valoran39', 'Arkham', 346235, 'tinkerwinker', 'Demacia', 2, '2014-3-4');
 
