@@ -13,6 +13,11 @@
 	<input type = "submit" value = "Modify records" name = "modify">
 </form>
 
+<!-- logout button -->
+<form method="POST" action="logout.php">
+<p><input type="submit" value="Log Out" name="Log Out"></p>
+</form>
+
 <form method = "POST" action = "manager.php">
 <p>
 Select the employee based on # of interns:

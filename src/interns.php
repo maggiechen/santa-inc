@@ -18,8 +18,14 @@
 </form>
 </p>
 
+<!-- logout button -->
+<form method="POST" action="logout.php">
+<p><input type="submit" value="Log Out" name="Log Out"></p>
+</form>
+
 
 <?php
+ob_start();
 ini_set('session.save_path','sessions'); //save session to sessions folder
 session_start();
 
@@ -122,13 +128,13 @@ if ($db_conn) {
 		exit();
 	}
 
-	
+
 	//Print the name of the intern's trainer
-	echo "<br> Trainer name: <br>"; 
+	echo "<br><b> Trainer name: </b>"; 
 	$trainernamequery = executePlainSQL("select f.name as name from InternElf_train i, FulltimeElf_mng_mon f where i.funame = f.uname and i.uname = '".$u_name."'");	
 	while ($row = OCI_Fetch_Array($trainernamequery, OCI_BOTH))
-		echo "<p>".$row[0]."</p>";
-
+		echo $row[0];
+	echo "<br>";
 
 	
 	$reindeerquery = executePlainSQL("select * from takeCareOf t, Reindeer_drives r where t.stall = r.stall and t.iuname = '".$u_name."'");
@@ -158,9 +164,7 @@ if ($db_conn) {
 		}
 		echo "</table>";
 	
-
 	}
-
 
 	//Commit to save changes...
 	OCILogoff($db_conn);

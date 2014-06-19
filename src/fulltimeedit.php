@@ -19,6 +19,11 @@
 	</form>
 </p>
 
+<!-- logout button -->
+<form method="POST" action="logout.php">
+<p><input type="submit" value="Log Out" name="Log Out"></p>
+</form>
+
 <form method = "POST" action = "fulltimeedit.php">
 	<p>
 		Delete an intern:

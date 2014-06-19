@@ -15,6 +15,11 @@
 </form>
 </p>
 
+<!-- logout button -->
+<form method="POST" action="logout.php">
+<p><input type="submit" value="Log Out" name="Log Out"></p>
+</form>
+
 
 <?php
 ini_set('session.save_path','sessions'); //save session to sessions folder
