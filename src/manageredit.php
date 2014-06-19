@@ -42,14 +42,7 @@ $I_UTrainer = $_POST['modItrainer'];
 $D_Emp = $_POST['delEmployee'];
 $D_Int = $_POST['delIntern'];
 $D_SModel = $_POST['delSModel'];
-$D_SSerial = $_POST ['delSSerial'];
-$D_Child = $_POST['delChild'];
-$D_TModel = $_POST['delTModel'];
-$D_TSno = $_POST['delTSno'];
 $D_SSserial = $_POST['delSSerial'];
-$D_SSmodel = $_POST['delSSmodel'];
-$D_SSname = $_POST['delSSname'];
-$D_Rein = $_POST['delReindeer'];
 
 //=========================================================================================================================
 
@@ -412,10 +405,6 @@ document.getElementById('li_'+tab).setAttribute("class", "active");
 <tr><td> <input type = "submit" value = "Intern" name = "delInt"> Username </td> <td> <input type = "text", name = "delIntern"> </td></tr>
 <tr><td> <input type = "submit" value = "Sleigh" name = "delSleigh"> Model </td> <td> <input type = "text", name = "delSModel"> </td></tr>
 <tr><td>Serial</td> <td> <input type = "text", name = "delSSerial"> </td></tr>
-<tr><td><input type = "submit" value = "Child" name = "delC">Child ID</td> <td> <input type = "text", name = "delChild"> </td></tr>
-<tr><td><input type = "submit" value = "Toy" name = "delToy"> Model</td> <td> <input type = "text", name = "delTModel"> </td></tr>
-<tr><td>Serial No</td> <td> <input type = "text", name = "delTSno">  </td></tr>
-<tr><td><input type = "submit" value = "Reindeer" name = "DelR"> Stall number</td> <td> <input type = "text", name = "delReindeer"> </td></tr>
 </table>
 
 
